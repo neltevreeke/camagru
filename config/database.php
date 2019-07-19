@@ -2,9 +2,9 @@
     class Database {
 
         // Database parameters
-        private $host = "127.0.01";
+        private $host = "127.0.0.1:3306";
         private $DB_NAME = "camagru_db";
-        private $DB_USER = "root";
+        private $DB_USER = "nelte";
         private $DB_PASSWORD = "root";
         private $DB_DSN;
         private $conn;
