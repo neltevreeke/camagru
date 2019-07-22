@@ -1,3 +1,9 @@
+<?php
+
+    print_r($_POST);
+
+?>
+
 <html>
     <head>
         <title>Login - Camagru</title>

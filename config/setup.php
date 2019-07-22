@@ -55,4 +55,13 @@
                                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
     $stmt->execute();
 
+    // Create admin user
+    $stmt = $connection->prepare('INSERT INTO `users` ( `id`, `username`, `email`, `password`, `admin`) VALUES
+                                (1, 
+                                "nelte",
+                                "nelte.p.vreeke@gmail.com",
+                                "nelte",
+                                1)');
+    $stmt->execute();
+
 ?>
