@@ -31,6 +31,19 @@ input[type=submit] {
     font-size: 17px;
 }
 
+button {
+    background-color: #41B3A3;
+    color: white;
+    font-size: 17px;
+    width: 50%;
+    margin-top: 20px;
+    padding: 10px 10px;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    cursor: pointer;
+}
+
 
 /* NAVBAR */ 
 
@@ -78,14 +91,13 @@ background-color: #E8A87C;
 }
 
 .footer a {
-    padding: 10px 20px;
+    padding: 10px 10px;
     text-align: center;
 }
 
 .fa-camera {
     padding-top: 11px;
     color: white;
-    transform: translateX(-10px);
 }
 
 
@@ -185,6 +197,9 @@ background-color: #E8A87C;
     outline: none;
 }
 
+
+/* LOGIN AND REGISTER FORM */
+
 .login-form {
     margin-top: 50px;
     color: white;
@@ -215,6 +230,14 @@ background-color: #E8A87C;
     outline: none;
 }
 
+.login-error {
+    width: 50%;
+    float: left;
+    color: red;
+    text-align: center;
+    margin-top: 25px;
+}
+
 .register-form input {
     width: 50%;
     margin-top: 20px;
@@ -222,4 +245,12 @@ background-color: #E8A87C;
     border: none;
     border-radius: 5px;
     outline: none;
+}
+
+.register-error {
+    width: 50%;
+    float: right;
+    color: red;
+    text-align: center;
+    margin-top: 25px;
 }

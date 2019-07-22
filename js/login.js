@@ -1,25 +1,64 @@
 const elRegister = document.getElementById('register');
-const elUsername = document.getElementById('register-username');
-const elEmail = document.getElementById('register-mail');
-const elPassword = document.getElementById('register-password');
-const elRepPassword = document.getElementById('register-reppassword');
+const elLogin = document.getElementById('login');
+const errArr = [];
+
+const createErrDiv = () => {
+    const elErrDiv = document.createElement("div");
+    elErrDiv.setAttribute('class', 'register-error');
+
+    return elErrDiv;
+}
+
+const renderRegisterError = (errArr) => {
+    const elErrDiv = document.getElementById('register-error');
+
+    elErrDiv.innerHTML = errArr[0];
+    errArr.length = 0;
+}
+
+const renderLoginError = (errArr) => {
+    const elErrDiv = document.getElementById('login-error');
+
+    elErrDiv.innerHTML = errArr[0];
+    errArr.length = 0;
+}
 
 elRegister.onclick = () => {
-    if (elUsername.value === "") {
-        return;
+    const elRegisterUsername = document.getElementById('register-username');
+    const elRegisterEmail = document.getElementById('register-mail');
+    const elRegisterPassword = document.getElementById('register-password');
+    const elRegisterRepPassword = document.getElementById('register-reppassword');
+
+    if (elRegisterUsername.value === "") {
+        errArr.push("Username can't be empty");
     }
-    if (elEmail.value === "") {
-        return;
+    if (elRegisterEmail.value === "") {
+        errArr.push("Emailaddress can't be empty");
     }
-    if (elPassword.value === "") {
-        return;
+    if (elRegisterPassword.value === "") {
+        errArr.push("Password can't be empty");
     }
-    if (elRepPassword.value === "") {
-        return;
+    if (elRegisterRepPassword.value !== elRegisterPassword.value) {
+        errArr.push("Passwords do not match");
     }
-    if (elRepPassword.value !== elPassword.value) {
-        return;
+    if (errArr.length > 0) {
+        renderRegisterError(errArr);
     }
 
-    const userData = Array();
+    // console.log('send ajax oject to php api');
+};
+
+elLogin.onclick = () => {
+    const elLoginEmail = document.getElementById('login-mail');
+    const elLoginPassword = document.getElementById('login-password');
+
+    if (elLoginEmail === "") {
+        errArr.push("Emailaddress can't be empty");
+    }
+    if (elLoginPassword === "") {
+        errArr.push("Password can't be empty");
+    }
+    if (errArr.length > 0) {
+        renderLoginError(errArr);
+    }
 };

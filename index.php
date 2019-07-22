@@ -87,9 +87,10 @@
 
             </div>
         </div>
-        <div class = "footer">
+        <?php include_once ('./modules/footer.php'); ?>
+        <!-- <div class = "footer">
             <a href="#"><span class = "fa fa-camera"></span></a>
-        </div>
+        </div> -->
     </body>
 
 </html>

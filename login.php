@@ -8,15 +8,15 @@
     <body>
         <?php include_once ('./modules/navbar.php'); ?>
 
-        <div class = "main-wrapper">
+        <div id = "main-wrapper" class = "main-wrapper">
             <div class = "login-form">
                 <div class = "form-title">
                     <h3>Already an existing user?</h3>
                 </div>
                 <form>
-                    <input id = "login-email" type = "email" placeholder = "Emailaddress" />
+                    <input id = "login-mail" type = "email" placeholder = "Emailaddress" />
                     <input id = "login-password" type = "password" placeholder = "Password" />
-                    <input id = "login" type = "submit" value = "Log in" />
+                    <button id = "login" type = "button">Log in</button>
                 </form>
             </div>
             <div class = "register-form">
@@ -28,10 +28,15 @@
                     <input id = "register-mail" type = "email" placeholder = "Emailaddress" />
                     <input id = "register-password" type = "password" placeholder = "Password" />
                     <input id = "register-reppassword" type = "password" placeholder = "Repeat password" />
-                    <input id = "register" type = "submit" value = "Register" />
+                    <button id = "register" type = "button">Register</button>
                 </form>
             </div>
+            <div class = "register-error" id = "register-error">
+            </div>
+            <div class = "login-error" id = "login-error">
+            </div>
         </div>
+        <?php include_once ('./modules/footer.php'); ?>
         <script src=".\js\login.js"></script>
     </body>
 
