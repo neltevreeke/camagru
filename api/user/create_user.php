@@ -1,6 +1,6 @@
 <?php
-include_once('config/database.php');
-include_once('../user.class.php');
+include_once('../../config/database.php');
+include_once('../objects/user.class.php');
 
 // Sets active headers on page
 header("Access-Control-Allow-Origin: http://localhost/");
@@ -17,10 +17,19 @@ $db = $database->connect();
 $user = new User($db);
 
 // decodes javascript sent ajax request
-$data = json_decode(file_get_contents('php://input'));
+$jsonString = file_get_contents('php://input');
+$jsonDecode = json_decode($jsonString);
 
-$user->username = $data->username;
-$user->emailaddress = $data->emailaddress;
-$user->password = $data->password;
+// sets user variables to input variables
+$user->username = $jsonDecode->username;
+$user->email = $jsonDecode->emailaddress;
+$user->password = $jsonDecode->password;
+
+// calls user create method to create user
+if ($user->create()) {
+    echo json_encode(array("message" => "User successfully created"));
+} else {
+    echo json_encode(array("message" => "User creation failed"));
+}
 
 ?>
