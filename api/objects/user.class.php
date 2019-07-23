@@ -25,11 +25,21 @@ class User {
                 VALUES ( ?, ?, ?, 0)";
         $stmt = $this->conn->prepare($query);
 
-        if ($stmt->execute(array($this->username, $this->email, $this->password))) {
-            return true;
-        }
-        return false;
+        $stmt->execute(array($this->username, $this->email, $this->password));
     }
+
+    public function checkEmail() {
+        $this->email = htmlspecialchars(strip_tags($this->email));
+
+        $query = "SELECT FROM " . $this->tableName . "
+                WHERE ";
+
+        $stmmt = $this->conn->prepare($query);
+    }
+
+    // public function checkUsername() {
+
+    // }
 }
 
 ?>

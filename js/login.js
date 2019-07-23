@@ -46,20 +46,6 @@ elRegister.onclick = () => {
         'password': elRegisterPassword.value
     }
 
-    // Send ajax object to api
-    // xhttp = new XMLHttpRequest();
-    // xhttp.open('POST', 'http://localhost:8100/api/user/create_user.php', true);
-
-    // xhttp.onload = () => {
-    //     if (xhttp.status === 400) {
-    //         console.log(xhttp.response);
-    //         console.log(xhttp.responseText);
-    //     }
-    // };
-
-    // xhttp.setRequestHeader('Content-type', 'application/json');
-    // xhttp.send(JSON.stringify(dataRegisterObject));
-
     fetch('http://localhost:8100/api/user/create_user.php', {
         method: 'POST',
         headers: {
@@ -69,11 +55,6 @@ elRegister.onclick = () => {
         })
     .then(res => res.json())
     .then(res => console.log(res))
-
-    console.log('geile hoeren');
-
-
-    // window.location.href = "http://localhost:8100/api/user/create_user.php";
 
     // Check if return values are good to go
     // |
