@@ -34,7 +34,6 @@
                         <input placeholder = "Add a comment..." />
                     </div>
                 </div>
-
                 <div class = "main-item">
                     <div class = "item-header">
                         <div class = "item-username">
@@ -59,7 +58,6 @@
                         <input placeholder = "Add a comment..." />
                     </div>
                 </div>
-
                 <div class = "main-item">
                     <div class = "item-header">
                         <div class = "item-username">
@@ -88,9 +86,6 @@
             </div>
         </div>
         <?php include_once ('./modules/footer.php'); ?>
-        <!-- <div class = "footer">
-            <a href="#"><span class = "fa fa-camera"></span></a>
-        </div> -->
     </body>
 
 </html>

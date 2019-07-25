@@ -25,11 +25,22 @@ $user->username = $jsonDecode->username;
 $user->email = $jsonDecode->emailaddress;
 $user->password = $jsonDecode->password;
 
-// calls user create method to create user
-if ($user->create()) {
+// Check for unique email and username
+$emailExist = $user->checkEmail();
+$usernameExist = $user->checkUsername();
+
+if ($usernameExist) {
+    echo json_encode(array("message" => "Username already in use"));
+    die();
+}
+if ($emailExist) {
+    echo json_encode(array("message" => "Email already in use"));
+    die();
+}
+if (!$emailExist && !$usernameExist) {
+    $user->create();
+    $user->verifyEmail();
     echo json_encode(array("message" => "User successfully created"));
-} else {
-    echo json_encode(array("message" => "User creation failed"));
 }
 
 ?>

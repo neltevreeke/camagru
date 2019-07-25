@@ -37,7 +37,7 @@
             </div>
         </div>
         <?php include_once ('./modules/footer.php'); ?>
-        <script src=".\js\login.js"></script>
+        <script src=".\js\register.js"></script>
     </body>
 
 </html>

@@ -29,6 +29,8 @@
                                 `username` varchar(100) NOT NULL,
                                 `email` varchar(100) NOT NULL,
                                 `password` varchar(100) DEFAULT NULL,
+                                `verified` int(2) NOT NULL,
+                                `code` varchar(100) NOT NULL,
                                 `admin` int(2) NOT NULL
                                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
     $stmt->execute();
@@ -56,11 +58,13 @@
     $stmt->execute();
 
     // Create admin user
-    $stmt = $connection->prepare('INSERT INTO `users` ( `id`, `username`, `email`, `password`, `admin`) VALUES
+    $stmt = $connection->prepare('INSERT INTO `users` ( `id`, `username`, `email`, `password`, `verified`, `code`, `admin`) VALUES
                                 (1, 
                                 "nelte",
                                 "nelte.p.vreeke@gmail.com",
                                 "nelte",
+                                1,
+                                "6887ab99459f433e994ddce6fe4c134e",
                                 1)');
     $stmt->execute();
 

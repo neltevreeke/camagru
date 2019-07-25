@@ -7,25 +7,34 @@
         echo ('<div class = "navbar">
                     <div class = "menu">
                         <a href="index.php" class="active">home</a>
-                        <a href="login.php">login</a>
+                        <a href="login.php">login / register</a>
                         <a href="#">about</a>
                     </div>
                 </div>');
     } else if ($result === "index.php") {
         echo ('<div class = "navbar">
-                <div class = "menu">
-                    <a href="index.php" class="active">home</a>
-                    <a href="login.php">login</a>
-                    <a href="#">about</a>
-                </div>
-            </div>');
+                    <div class = "menu">
+                        <a href="index.php" class="active">home</a>
+                        <a href="login.php">login / register</a>
+                        <a href="#">about</a>
+                    </div>
+                </div>');
     } else if ($result === "login.php") {
         echo ('<div class = "navbar">
-                <div class = "menu">
-                    <a href="index.php">home</a>
-                    <a href="login.php" class="active">login</a>
-                    <a href="#">about</a>
-                </div>
-            </div>');
+                    <div class = "menu">
+                        <a href="index.php">home</a>
+                        <a href="login.php" class="active">login / register</a>
+                        <a href="#">about</a>
+                    </div>
+                </div>');
+    } else if ($result === "dashboard.php") {
+        echo ('<div class = "navbar">
+                    <div class = "menu">
+                        <a href="index.php">home</a>
+                        <a href="dashboard.php" class="active">Dashboard</a>
+                        <a href="login.php">log out</a>
+                        <a href="#">about</a>
+                    </div>
+                </div>');
     }
 ?>
