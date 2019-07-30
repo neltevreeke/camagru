@@ -58,11 +58,12 @@
     $stmt->execute();
 
     // Create admin user
+    $password = password_hash('nelte', PASSWORD_BCRYPT);
     $stmt = $connection->prepare('INSERT INTO `users` ( `id`, `username`, `email`, `password`, `verified`, `code`, `admin`) VALUES
                                 (1, 
                                 "nelte",
                                 "nelte.p.vreeke@gmail.com",
-                                "nelte",
+                                "'. $password .'",
                                 1,
                                 "6887ab99459f433e994ddce6fe4c134e",
                                 1)');

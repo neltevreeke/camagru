@@ -1,6 +1,7 @@
 <?php
 
 class User {
+    public $id;
     public $username;
     public $email;
     public $password;
@@ -112,6 +113,57 @@ class User {
                 return false;
             }
         }
+    }
+
+    public function loginWithEmail() {
+        $this->email = htmlspecialchars(strip_tags($this->email));
+
+        $query = "SELECT * FROM " . $this->tableName . 
+                " WHERE email= '". $this->email ."' 
+                LIMIT 1";
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->execute();
+
+        if ($stmt->rowCount() > 0) {
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            $this->id = $row['id'];
+            $this->username = $row['username'];
+            $this->password = $row['password'];
+            return true;
+        }
+        return false;
+    }
+
+    public function generateToken() {
+        $query = "SELECT id FROM users 
+                WHERE email = ? 
+                and verified = '1'
+                LIMIT 1";
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->execute(array($this->email));
+        $result = $stmt->fetchAll();
+
+        // token structure: header.payload.signature
+        // Creating token header as a JSON string
+        $header = json_encode(['typ' => 'JWT', 'alg' => 'HS256']);
+        $payload = json_encode(['user_id' => $result[0]['id']]);
+
+        // Encoding header and payload to base 64 url strings with str replace because
+        // there is no built in PHP Base64Url method yet.
+        // So we have to replace + with -, / with _ and = with ''.
+        $base64UrlHeader = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode($header));
+        $base64UrlPayload = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode($payload));
+
+        // Creating signature
+        $signature = hash_hmac('sha256', $base64UrlHeader . "." . $base64UrlPayload, 'hmTarr3ls', true);
+        $base64UrlSignature = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode($signature));
+
+        $token = $base64UrlHeader . "." . $base64UrlPayload . "." . $base64UrlSignature;
+
+        return $token;
     }
 }
 

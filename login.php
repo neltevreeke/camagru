@@ -38,6 +38,7 @@
         </div>
         <?php include_once ('./modules/footer.php'); ?>
         <script src=".\js\register.js"></script>
+        <script src=".\js\login.js"></script>
     </body>
 
 </html>

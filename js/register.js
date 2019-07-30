@@ -1,13 +1,5 @@
 const elRegister = document.getElementById('register');
-const elLogin = document.getElementById('login');
 const errArr = [];
-
-const createErrDiv = () => {
-    const elErrDiv = document.createElement("div");
-    elErrDiv.setAttribute('class', 'register-error');
-
-    return elErrDiv;
-}
 
 const renderRegisterError = (errArr) => {
     const elErrDiv = document.getElementById('register-error');

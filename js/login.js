@@ -1,26 +1,4 @@
-
-const createLoginObject = (emailValue, passwordValue) => {
-    const dataObject = {
-        'email': emailValue,
-        'password': passwordValue
-    }
-
-    xhttp = new XMLHttpRequest();
-    xhttp.open('POST', 'login_process.php', true);
-
-    xhttp.onload = () => {
-        if (xhttp.status === 400) {
-            console.log(xhttp.response);
-            console.log(xhttp.responseText);
-        }
-    };
-
-    xhttp.setRequestHeader('Content-type', 'application/json');
-    xhttp.send(JSON.stringify(dataObject));
-
-    window.location.href = "http://localhost:8100/login_process.php";
-    console.log('data send successfully');
-}
+const elLogin = document.getElementById('login');
 
 const renderLoginError = (errArr) => {
     const elErrDiv = document.getElementById('login-error');
@@ -45,11 +23,25 @@ elLogin.onclick = () => {
     }
 
     // Make ajax object to send data to php api
-    const loginObject = createLoginObject(elLoginEmail.value, elLoginPassword.value);
-
+    const dataLoginObject = {
+        'email': elLoginEmail.value,
+        'password': elLoginPassword.value
+    }
 
     // Send ajax object to api
-
+    fetch('http://localhost:8100/api/user/login_user.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(dataLoginObject)
+        })
+    .then(res => res.json())
+    .then(res => {
+        if (window.localStorage.getItem('token', res['token'])){
+            console.log('There is no token');
+        }
+    })
 
 
     // check if return values are correct
