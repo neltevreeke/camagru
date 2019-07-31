@@ -163,6 +163,9 @@ class User {
 
         $token = $base64UrlHeader . "." . $base64UrlPayload . "." . $base64UrlSignature;
 
+        // push token into cookie
+        
+
         return $token;
     }
 }

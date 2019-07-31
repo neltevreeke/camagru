@@ -37,11 +37,7 @@ elLogin.onclick = () => {
         body: JSON.stringify(dataLoginObject)
         })
     .then(res => res.json())
-    .then(res => {
-        if (window.localStorage.getItem('token', res['token'])){
-            console.log('There is no token');
-        }
-    })
+    .then(res => console.log(res))
 
 
     // check if return values are correct

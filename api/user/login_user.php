@@ -23,8 +23,7 @@ $email_exists = $user->loginWithEmail();
 
 if ($email_exists && password_verify($jsonDecode->password, $user->password)) {
     $token = $user->generateToken();
-    echo json_encode(array("message" => "Successful login",
-                            "token" => $token));
+    echo json_encode(array("message" => "Successful login"));
 } else {
     echo json_encode(array("message" => "login failed"));
 }
