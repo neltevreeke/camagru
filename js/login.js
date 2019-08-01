@@ -1,4 +1,5 @@
 const elLogin = document.getElementById('login');
+const TOKEN_NAMESPACE = "token";
 
 const renderLoginError = (errArr) => {
     const elErrDiv = document.getElementById('login-error');
@@ -37,14 +38,14 @@ elLogin.onclick = () => {
         body: JSON.stringify(dataLoginObject)
         })
     .then(res => res.json())
-    .then(res => console.log(res))
+    .then(res => {
+        if (res.message === "success") {
+            localStorage.setItem(TOKEN_NAMESPACE, res.token);
+            window.location.href = "/dashboard.php";
+        } else {
+            // error
+        }
+    })
 
-
-    // check if return values are correct
-
-
-
-    // proceed to log in to user profile and redirect to user dashboard
-
-
+    // Token in local storage, cache clearen werkt dan niet, en geheugen van localstorage is 5mb ipv cookie 2kb
 };

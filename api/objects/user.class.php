@@ -136,7 +136,7 @@ class User {
         return false;
     }
 
-    public function generateToken() {
+    public function getUserId() {
         $query = "SELECT id FROM users 
                 WHERE email = ? 
                 and verified = '1'
@@ -146,27 +146,11 @@ class User {
         $stmt->execute(array($this->email));
         $result = $stmt->fetchAll();
 
-        // token structure: header.payload.signature
-        // Creating token header as a JSON string
-        $header = json_encode(['typ' => 'JWT', 'alg' => 'HS256']);
-        $payload = json_encode(['user_id' => $result[0]['id']]);
+        return $result[0]['id'];
+    }
 
-        // Encoding header and payload to base 64 url strings with str replace because
-        // there is no built in PHP Base64Url method yet.
-        // So we have to replace + with -, / with _ and = with ''.
-        $base64UrlHeader = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode($header));
-        $base64UrlPayload = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode($payload));
+    public function  () {
 
-        // Creating signature
-        $signature = hash_hmac('sha256', $base64UrlHeader . "." . $base64UrlPayload, 'hmTarr3ls', true);
-        $base64UrlSignature = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode($signature));
-
-        $token = $base64UrlHeader . "." . $base64UrlPayload . "." . $base64UrlSignature;
-
-        // push token into cookie
-        
-
-        return $token;
     }
 }
 

@@ -48,5 +48,6 @@
             </div>
         </div>
         <?php include_once ('./modules/footer.php'); ?>
+        <script src=".\js\dashboard.js"></script>
     </body>
 </html>

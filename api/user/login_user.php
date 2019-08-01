@@ -1,6 +1,7 @@
 <?php
 include_once('../../config/database.php');
 include_once('../objects/user.class.php');
+include_once('../objects/tokens.php');
 
 header("Access-Control-Allow-Origin: http://localhost:8100/");
 header("Content-Type: application/json; charset=UTF-8");
@@ -22,10 +23,13 @@ $user->email = $jsonDecode->email;
 $email_exists = $user->loginWithEmail();
 
 if ($email_exists && password_verify($jsonDecode->password, $user->password)) {
-    $token = $user->generateToken();
-    echo json_encode(array("message" => "Successful login"));
+
+    $userid = $user->getUserId();
+    $token = generateToken($userid);
+    
+    echo json_encode(array("message" => "success", "token" => $token));
 } else {
-    echo json_encode(array("message" => "login failed"));
+    echo json_encode(array("message" => "failed"));
 }
 
 
