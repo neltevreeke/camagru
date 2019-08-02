@@ -149,9 +149,6 @@ class User {
         return $result[0]['id'];
     }
 
-    public function  () {
-
-    }
 }
 
 ?>

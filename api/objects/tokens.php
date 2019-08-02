@@ -24,9 +24,12 @@ function generateToken($id) {
 }
 
 function decryptToken($token) {
+    $tokenExplode = explode('.', $token);
 
+    $header = base64_decode($tokenExplode[0]);
+    $payload = base64_decode($tokenExplode[1]);
 
-    // return userid
+    return $payload;
 }
 
 ?>

@@ -40,6 +40,7 @@ elLogin.onclick = () => {
     .then(res => res.json())
     .then(res => {
         if (res.message === "success") {
+            // Token in local storage, cache clearen werkt dan niet, en geheugen van localstorage is 5mb ipv cookie 2kb
             localStorage.setItem(TOKEN_NAMESPACE, res.token);
             window.location.href = "/dashboard.php";
         } else {
@@ -47,5 +48,4 @@ elLogin.onclick = () => {
         }
     })
 
-    // Token in local storage, cache clearen werkt dan niet, en geheugen van localstorage is 5mb ipv cookie 2kb
 };

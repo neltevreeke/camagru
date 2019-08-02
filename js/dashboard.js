@@ -17,7 +17,8 @@ const getMe = () => {
             'x-token': token
         }
     })
-    .then(res => res.json());
+    .then(res => res.json())
+    .then(res => console.log(res.email));
 }
 
 getMe();
