@@ -109,7 +109,6 @@ class User {
                 $stmt->execute(array($verificationCode, $this->email));
                 return true;
             } else {
-                // Return false if failed
                 return false;
             }
         }

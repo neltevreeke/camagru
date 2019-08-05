@@ -25,11 +25,18 @@ function generateToken($id) {
 
 function decryptToken($token) {
     $tokenExplode = explode('.', $token);
+    $signature = hash_hmac('sha256', $tokenExplode[0] . "." . $tokenExplode[1], 'hmTarr3ls', true);
+    $signature = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode($signature));
 
     $header = base64_decode($tokenExplode[0]);
     $payload = base64_decode($tokenExplode[1]);
+    $secret = $tokenExplode[2];
 
-    return $payload;
+    if ($secret == $signature) {
+        return $payload;
+    }
+
+    return ;
 }
 
 ?>
