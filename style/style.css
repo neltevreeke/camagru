@@ -88,6 +88,7 @@ background-color: #E8A87C;
     height: 40px;
     width: 40px;
     border-radius: 50%;
+    visibility: hidden;
 }
 
 .footer a {
@@ -100,6 +101,9 @@ background-color: #E8A87C;
     color: white;
 }
 
+.footer-visible {
+    visibility: visible;
+}
 
 /* CONTENT WRAPPER */
 

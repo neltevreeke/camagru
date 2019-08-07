@@ -7,9 +7,7 @@
     <body>
         <?php include_once ('./modules/navbar.php'); ?>
         <div class = "main-wrapper" id = "main-wrapper">
-
             <div class = "user-sidebar" id = "user-sidebar">
-                
             </div>
         </div>
         <?php include_once ('./modules/footer.php'); ?>

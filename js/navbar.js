@@ -1,0 +1,2 @@
+token = localStorage.getItem('token');
+

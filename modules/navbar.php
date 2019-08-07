@@ -32,9 +32,15 @@
                     <div class = "menu">
                         <a href="index.php">home</a>
                         <a href="dashboard.php" class="active">Dashboard</a>
-                        <a href="login.php">log out</a>
+                        <a href="logout.php">log out</a>
                         <a href="#">about</a>
                     </div>
                 </div>');
     }
 ?>
+
+<html>
+    <body>
+        <script src=".\js\navbar.js"></script>
+    </body>
+</html>
