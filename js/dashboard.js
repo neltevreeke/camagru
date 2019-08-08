@@ -1,3 +1,5 @@
+const mainWrapper = document.getElementById('main-wrapper');
+const userSidebar = document.getElementById('user-sidebar');
 const TOKEN_NAMESPACE = 'token';
 const token = localStorage.getItem(TOKEN_NAMESPACE);
 let user;
@@ -24,30 +26,20 @@ const getMe = () => {
     });
 }
 
-/* <div class = "user-photos-row">
-        <div class = "user-photo-card">
-            <div class = "user-photo-image">
-                <img src = "https://images.unsplash.com/photo-1564053051381-5cb91813736b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2326&q=80" />
-            </div>
-            <div class = "photo-options">
-                <span class = "wat">
-                    <span class = "fa fa-trash"></span>
-                    <span class = "fa fa-edit"></span>
-                </span>
-            </div>
-        </div>
-    </div> */
+const renderMessage = (message) => {
+    const messageDiv = document.createElement('div');
+    messageDiv.setAttribute('class', 'photo-message');
 
-
+    messageDiv.innerHTML = message;
+    mainWrapper.insertBefore(messageDiv, userSidebar);
+}
 
 const renderPhotos = (res) => {
     if (res.message === "No photos found") {
-        // error message
+        renderMessage(res.message);
         return null;
     }
 
-    const mainWrapper = document.getElementById('main-wrapper');
-    const userSidebar = document.getElementById('user-sidebar');
     let parentDiv = document.createElement('div');
     parentDiv.setAttribute('class', 'user-photos-row');
 

@@ -8,7 +8,6 @@
                     <div class = "menu">
                         <a href="index.php" class="active">home</a>
                         <a href="login.php">login / register</a>
-                        <a href="#">about</a>
                     </div>
                 </div>');
     } else if ($result === "index.php") {
@@ -16,7 +15,6 @@
                     <div class = "menu">
                         <a href="index.php" class="active">home</a>
                         <a href="login.php">login / register</a>
-                        <a href="#">about</a>
                     </div>
                 </div>');
     } else if ($result === "login.php") {
@@ -24,7 +22,6 @@
                     <div class = "menu">
                         <a href="index.php">home</a>
                         <a href="login.php" class="active">login / register</a>
-                        <a href="#">about</a>
                     </div>
                 </div>');
     } else if ($result === "dashboard.php") {
@@ -33,7 +30,14 @@
                         <a href="index.php">home</a>
                         <a href="dashboard.php" class="active">Dashboard</a>
                         <a href="logout.php">log out</a>
-                        <a href="#">about</a>
+                    </div>
+                </div>');
+    } else if ($result === "create_photo.php") {
+        echo ('<div class = "navbar">
+                    <div class = "menu">
+                        <a href="index.php">home</a>
+                        <a href="dashboard.php" class="active">Dashboard</a>
+                        <a href="logout.php">log out</a>
                     </div>
                 </div>');
     }

@@ -1,5 +1,5 @@
 <?php
-    echo '<div class = "footer" id = "footer"><a href="#"><span class = "fa fa-camera"></span></a></div>';
+    echo '<div class = "footer" id = "footer"><a href="create_photo.php"><span class = "fa fa-camera"></span></a></div>';
 ?>
 
 <html>

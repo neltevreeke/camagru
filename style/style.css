@@ -331,4 +331,12 @@ background-color: #E8A87C;
     cursor: pointer;
 }
 
+.photo-message {
+    float: left;
+    width: 78%;
+    height: 10%;
+    margin-top: 50px;
+    color: #999;
+}
+
 /* https://cdn.dribbble.com/users/946289/screenshots/2798045/contract-1.png */
