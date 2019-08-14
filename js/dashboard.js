@@ -33,10 +33,10 @@
             const photoOptions = document.createElement('div');
             const photoOptionsSpan = document.createElement('span');
             const photoOptionsDel = document.createElement('span');
-            // const photoOptionsEdit = document.createElement('span');
+            const photoOptionsEdit = document.createElement('span');
             photoOptionsSpan.classList.add('wat');
             photoOptionsDel.setAttribute('class', 'fa fa-trash');
-            // photoOptionsEdit.setAttribute('class', 'fa fa-edit');
+            photoOptionsEdit.setAttribute('class', 'fa fa-edit');
         
             photoOptions.classList.add('photo-options');
     
@@ -49,7 +49,7 @@
             photoImage.appendChild(image);
             photoOptions.appendChild(photoOptionsSpan);
             photoOptionsSpan.appendChild(photoOptionsDel);
-            // photoOptionsSpan.appendChild(photoOptionsEdit);
+            photoOptionsSpan.appendChild(photoOptionsEdit);
     
             if (j >= 2) {
                 parentDiv = document.createElement('div');

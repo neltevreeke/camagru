@@ -10,11 +10,11 @@ window.API_URL = 'http://localhost:8100/api/';
 
         options.headers = options.headers || {};
         options.headers['Content-Type'] = 'application/json';
-    
+
         if (token) {
             options.headers['x-token'] = token;
         }
-    
+
         return fetch(url, options)
             .then(res => res.json());
     };

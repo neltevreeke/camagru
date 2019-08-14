@@ -20,7 +20,7 @@ window.user = null;
             listeners[i]();
         }
     }
-    
+
     function initialize () {
         getMe()
             .then(res => {

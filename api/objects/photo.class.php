@@ -19,17 +19,7 @@ class Photo {
         $stmt->execute(array($this->user_id));
 
         if ($stmt->rowCount() > 0) {
-            $numRows = $stmt->rowCount();
-            $rows = $stmt->fetchAll();
-            $photoArr = array();
-            $i = 0;
-
-            foreach ($rows as $userPhoto) {
-                $photoArr[$i] = $userPhoto;
-                $i++;
-            }
-
-            return $photoArr;
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } else {
             return false;
         }
