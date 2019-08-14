@@ -11,6 +11,8 @@
             </div>
         </div>
         <?php include_once ('./modules/footer.php'); ?>
+        <script src=".\js\api.js"></script>
+        <script src=".\js\user.js"></script>
         <script src=".\js\dashboard.js"></script>
     </body>
 </html>

@@ -291,6 +291,7 @@ background-color: #E8A87C;
 }
 
 .user-photo-image img {
+    object-fit: cover;
     width: 100%;
     height: 100%;
     border-radius: 5px;
@@ -338,5 +339,3 @@ background-color: #E8A87C;
     margin-top: 50px;
     color: #999;
 }
-
-/* https://cdn.dribbble.com/users/946289/screenshots/2798045/contract-1.png */
