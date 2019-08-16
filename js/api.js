@@ -9,7 +9,12 @@ window.API_URL = 'http://localhost:8100/api/';
         const options = opts || {};
 
         options.headers = options.headers || {};
-        options.headers['Content-Type'] = 'application/json';
+
+        const hasFormData = opts && opts.body && opts.body instanceof FormData;
+        
+        if (!hasFormData) {
+            options.headers['Content-Type'] = 'application/json';
+        }
 
         if (token) {
             options.headers['x-token'] = token;

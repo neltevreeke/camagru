@@ -7,18 +7,30 @@
     <body>
         <?php include_once ('./modules/navbar.php'); ?>
         <div class="main-wrapper" id="main-wrapper">
-            <!-- Stream video via webcam -->
-            <div class="video-wrap">
-                <video id="video" playsinline autoplay></video>
+            <div class="overlay-wrap">
+                <div class="overlay-images">
+                    <img src="img/tiger.png" id="tiger" />
+                    <img src="img/house.png" id="house"/>
+                    <img src="img/karate.png" id="karate"/>
+                    <img src="img/work.png" id="work" />
+                </div>
             </div>
 
-            <!-- Trigger canvas web API -->
-            <div class="controller">
-                <button id="snap">Capture</button>
+            <div class="capture-wrap">
+                <div class="video-wrap">
+                    <video id="video" playsinline autoplay></video>
+                </div>
+
+                <canvas id="canvas" width="500" height="480"></canvas>
+
+                <div class="capture-button">
+                    <button id="snap">Capture</button>
+                </div>
+                <div class="save-button">
+                    <button id="save">Save Image</button>
+                </div>
             </div>
 
-            <!-- Webcam video snapshot -->
-            <canvas id="canvas" width="640" height="480"></canvas>
         </div>
         <?php include_once ('./modules/footer.php'); ?>
         <script src=".\js\api.js"></script>

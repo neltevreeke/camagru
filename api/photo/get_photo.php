@@ -14,7 +14,6 @@ $db = $database->connect();
 $photo = new Photo($db);
 
 $photo->user_id = $userId;
-
 $photoArr = $photo->getPhoto();
 
 header('Content-Type: application/json');

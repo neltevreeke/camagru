@@ -8,6 +8,9 @@
     $connection = $database->connect();
 
 
+    // Drop table comments
+    $stmt = $connection->prepare('DROP TABLE IF EXISTS `uploads`');
+    $stmt->execute();
 
     // Drop table comments
     $stmt = $connection->prepare('DROP TABLE IF EXISTS `comments`');
@@ -39,8 +42,9 @@
     $stmt = $connection->prepare('CREATE TABLE `photos` (
                                 `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
                                 `userid` int(11) NOT NULL,
-                                `image` varchar(128) NOT NULL,
+                                `data` MEDIUMBLOB NOT NULL,
                                 `likes` int (11) NOT NULL,
+                                `mimeType` varchar(100) NOT NULL,
                                 FOREIGN KEY (`userid`) REFERENCES users(id)
                                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
     $stmt->execute();

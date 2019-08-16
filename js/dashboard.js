@@ -27,8 +27,11 @@
         
             const photoImage = document.createElement('div');
             const image = document.createElement('img');
-            image.setAttribute('src', res.photos[i].image);
-            photoImage.classList.add('user-photo-image');
+
+            const id = res.photos[i].id;
+            image.setAttribute('src', '/api/photo/photo.php?id=' + id);
+            image.setAttribute('style', 'object-fit: cover; width: 100%; height: 100%; border-radius: 3px;');
+
             
             const photoOptions = document.createElement('div');
             const photoOptionsSpan = document.createElement('span');
@@ -64,9 +67,7 @@
     }
     
     async function initialize () {
-        console.log('initialize dashboard');
         const photos = await window.fetchAPI('photo/get_photo.php');
-        console.log('the photos are:');
         renderPhotos(photos);
     }
     

@@ -12,12 +12,11 @@ class Photo {
     }
 
     public function getPhoto() {
-        $query = "SELECT * FROM " . $this->tableName . "
+        $query = "SELECT id FROM " . $this->tableName . "
                 WHERE userid = ?";
         $stmt = $this->conn->prepare($query);
 
         $stmt->execute(array($this->user_id));
-
         if ($stmt->rowCount() > 0) {
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } else {
@@ -25,12 +24,19 @@ class Photo {
         }
     }
 
-    public function createPhoto() {
-        $query = "INSERT INTO `photos` (`id`, `userid`, `image`, `likes`)
-                VALUES (id , ?, ?, 0)";
+    public function uploadPhoto($mimeType) {
+        $query = "INSERT INTO `photos` (`id`, `userid`, `data`, `likes`, `mimeType`)
+                 VALUES (id, ?, ?, 0, ?)";
         $stmt = $this->conn->prepare($query);
 
-        $stmt->execute(array($this->user_id, $this->image));
+        $stmt->execute(array($this->user_id, $this->image, $mimeType));
+
+        if ($stmt->rowCount() > 0) {
+            $id = $this->conn->lastInsertId();
+            return $id;
+        } else {
+            return false;
+        }
     }
 }
 

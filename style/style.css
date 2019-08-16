@@ -339,3 +339,53 @@ background-color: #E8A87C;
     margin-top: 50px;
     color: #999;
 }
+
+/* CREATE PHOTO PAGE */
+
+.overlay-wrap {
+    margin-top: 50px;
+    margin-bottom: 0px;
+    width: 100%;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+}
+
+.overlay-images img {
+    float:left;
+    height: 80%;
+    margin-right: 20px;
+    margin-top: 15px;
+    cursor: pointer;
+    border: 2px solid rgb(208, 208, 208);
+    border-radius: 5px;
+}
+
+.overlay-images img:last-child {
+    margin-right: 0px;
+}
+
+.selected {
+    border: 2px solid #41B3A3 !important;
+}
+
+.video-wrap {
+    width: 50%;
+    float: left;
+    margin-top: 50px;
+}
+
+.capture-button {
+    width: 50%;
+    float: left;
+}
+
+.save-button {
+    width: 50%;
+    float:left;
+}
+
+#canvas {
+    background-color: rgb(208, 208, 208);
+    margin-top: 50px;
+}
