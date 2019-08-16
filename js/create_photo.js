@@ -43,23 +43,43 @@
     });
 
     tiger.onclick = () => {
-        tiger.classList.toggle('selected');
-        flag = 1;
+        if (flag === 0) {
+            tiger.classList.toggle('selected');
+            flag = 1;
+        } else if (flag === 1) {
+            tiger.classList.toggle('selected');
+            flag = 0;
+        }
     };
 
     house.onclick = () => {
-        house.classList.toggle('selected');
-        flag = 2;
+        if (flag === 0) {
+            house.classList.toggle('selected');
+            flag = 2;
+        } else if (flag === 2) {
+            house.classList.toggle('selected');
+            flag = 0;
+        }
     };
 
     karate.onclick = () => {
-        karate.classList.toggle('selected');
-        flag = 3;
+        if (flag === 0) {
+            karate.classList.toggle('selected');
+            flag = 3;
+        } else if (flag === 3) {
+            karate.classList.toggle('selected');
+            flag = 0;
+        }
     };
 
     work.onclick = () => {
-        work.classList.toggle('selected');
-        flag = 4;
+        if (flag === 0) {
+            work.classList.toggle('selected');
+            flag = 4;
+        }else if (flag === 4) {
+            work.classList.toggle('selected');
+            flag = 0;
+        }
     };
 
     // Load init
