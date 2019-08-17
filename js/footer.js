@@ -1,12 +1,15 @@
 token = localStorage.getItem('token');
-const elFooter = document.getElementById('footer');
+const elFooterCapture = document.getElementById('footer-capture');
+const elFooterUpload = document.getElementById('footer-upload');
 
 const displayFooter = () => {
-    elFooter.classList.add('footer-visible');
+    elFooterCapture.classList.add('footer-visible');
+    elFooterUpload.classList.add('footer-visible');
 }
 
 const hideFooter = () => {
-    elFooter.classList.remove('footer-visible');
+    elFooterCapture.classList.remove('footer-visible');
+    elFooterUpload.classList.remove('footer-visible');
 }
 
 const determineLogin = () => {

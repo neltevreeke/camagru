@@ -1,0 +1,98 @@
+Camagru project
+
+
+
+
+TODO
+
+
+NAVBAR
+_______________________________________________________________________________________________________________________________________________
+
+- Entire nabber refactoring to javascript and php (could be done using only JS I think) except for admins.
+- Rename dashboard in navbar to username???
+
+
+
+CREATE PHOTO
+_______________________________________________________________________________________________________________________________________________
+
+- No watermark png selected, save image button disabled
+- Edit capture image with chosen watermark png
+- Merge watermark png with image in php backend
+- Save watermarked capture to database
+- No empty photo should be allowed to be saved.
+- Feedback when photo has been saved to the database has been successful or failed.
+
+NOTES?
+
+Think about using more modules for the watermark png’s since they will also be used at upload_photo.php, just like the navbar and footer for DRY principle*.
+Think about refactoring code first before starting on any other pages for the modules.
+Feedback could be done by changing the color and innerHTML of the button
+
+
+
+UPLOAD PHOTO
+_______________________________________________________________________________________________________________________________________________
+
+- Uploading should be done by being able to drop an image on the drop field or using the upload button
+- Preview image in the field
+- Save image button disabled if no watermark png is selected
+- Merge watermark png with image in php backend
+- Save watermarked upload to database
+- Feedback when photo has been saved to the database has been successful or failed.
+
+NOTES?
+
+Firstly finish the create_photo.php in it’s entirety since a lot of the same things will be used in upload_photo.php.
+Feedback could be done by changing the color and innerHTML of the button
+
+
+
+DASHBOARD
+_______________________________________________________________________________________________________________________________________________
+
+- Update user information like email, password, username etc.
+- Delete uploaded images
+- Edit uploaded image so one can choose other watermarks for instance.
+- Fix the sidebar so it doesn’t slide downwards with each photo row.
+
+NOTES?
+
+None.
+
+
+
+HOMEPAGE
+_______________________________________________________________________________________________________________________________________________
+
+- Photos should be visible to anyone accessing the website.
+- Only the user specific photos should be deletable and editable.
+- Sorting, new to last.
+- Only logged in users should be able to comment and like.
+- Comments and likes should be visible even when not logged in.
+
+NOTES?
+
+None. Pretty self-explanatory
+
+
+
+LOGIN / REGISTER
+_______________________________________________________________________________________________________________________________________________
+
+- Submit form while pressing enter?
+
+NOTES?
+
+This may be a little hard to do to figure out which form has been submitted.
+
+
+
+DESIGN
+_______________________________________________________________________________________________________________________________________________
+
+- Refactor design to mostly fat black lettering.
+- Lots of white.
+- And a small pastel colour of choice.
+- Design should be fully responsive, which it obviously is not yet.

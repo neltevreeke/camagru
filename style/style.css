@@ -44,6 +44,9 @@ button {
     cursor: pointer;
 }
 
+button:hover {
+    background-color: rgb(46, 135, 123);
+}
 
 /* NAVBAR */ 
 
@@ -79,24 +82,45 @@ background-color: #E8A87C;
 
 /* FOOTER */ 
 
-.footer {
+.footer-capture {
     position: fixed;
     top: 95%;
-    left: 49.5%;
+    left: 45%;
     text-align: center;
     background-color: #41B3A3;
     height: 40px;
     width: 40px;
     border-radius: 50%;
-    visibility: hidden;
+    /* visibility: hidden; */
 }
 
-.footer a {
+.footer-upload {
+    position: fixed;
+    top: 95%;
+    left: 55%;
+    text-align: center;
+    background-color: #41B3A3;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+}
+
+.footer-capture a {
+    padding: 10px 10px;
+    text-align: center;
+}
+
+.footer-upload a {
     padding: 10px 10px;
     text-align: center;
 }
 
 .fa-camera {
+    padding-top: 11px;
+    color: white;
+}
+
+.fa-upload {
     padding-top: 11px;
     color: white;
 }
@@ -388,4 +412,12 @@ background-color: #E8A87C;
 #canvas {
     background-color: rgb(208, 208, 208);
     margin-top: 50px;
+}
+
+.upload-wrap {
+    width: 50%;
+    float: left;
+    margin-top: 50px;
+    height: 480px;
+    background-color: #999;
 }

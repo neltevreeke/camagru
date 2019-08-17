@@ -40,6 +40,14 @@
                         <a href="logout.php">log out</a>
                     </div>
                 </div>');
+    } else if ($result === "upload_photo.php") {
+        echo ('<div class = "navbar">
+                    <div class = "menu">
+                        <a href="index.php">home</a>
+                        <a href="dashboard.php" class="active">Dashboard</a>
+                        <a href="logout.php">log out</a>
+                    </div>
+                </div>');
     }
 ?>
 
