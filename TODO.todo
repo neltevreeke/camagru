@@ -2,6 +2,18 @@ Camagru project
 
 
 
+WIP
+
+
+LOGIN / REGISTER
+_______________________________________________________________________________________________________________________________________________
+
+- Password of minimum 6 characters
+- Error if password is not strong enough
+
+
+
+
 
 TODO
 
@@ -59,7 +71,7 @@ ________________________________________________________________________________
 
 NOTES?
 
-None.
+Keep in mind the password has to be at least 6 characters long.
 
 
 
@@ -82,6 +94,8 @@ LOGIN / REGISTER
 _______________________________________________________________________________________________________________________________________________
 
 - Submit form while pressing enter?
+- Password of minimum 6 characters
+- Error if password is not strong enough
 
 NOTES?
 
