@@ -43,8 +43,13 @@ elLogin.onclick = () => {
             // Token in local storage, cache clearen werkt dan niet, en geheugen van localstorage is 5mb ipv cookie 2kb
             localStorage.setItem(TOKEN_NAMESPACE, res.token);
             window.location.href = "/dashboard.php";
-        } else {
-            // error
+        } else if (res.message === "failed") {
+            errArr.push("Email or password is wrong, try again");
+
+            elLoginEmail.value = "";
+            elLoginPassword.value = "";
+            
+            renderLoginError(errArr);
         }
     })
 

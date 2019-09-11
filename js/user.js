@@ -36,8 +36,8 @@ window.user = null;
             return callback();
         }
 
-        listeners.push(callback)
+        listeners.push(callback);
     }
-    
+
     initialize();
 })();

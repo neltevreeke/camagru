@@ -14,19 +14,14 @@ $userId = decryptToken($token);
 $userId = json_decode($userId);
 $userId = $userId->user_id;
 
-// query
-$query = "SELECT * FROM users 
-            WHERE id = ? 
-            and verified = '1'";
-    $stmt = $db->prepare($query);
-    $stmt->execute(array($userId));
+$userModel = new User($db);
+$user = $userModel->getUser($userId);
 
-// ojbect of user
-if ($stmt->rowCount() > 0) {
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    echo json_encode($row);
-} else {
+if (!$user) {
     echo json_encode(array("message" => "Error"));
+    return;
 }
+
+echo json_encode($user);
 
 ?>

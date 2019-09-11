@@ -18,6 +18,7 @@ const determineLogin = () => {
         return null;
     } else {
         displayFooter();
+        return null;
     }
 }
 

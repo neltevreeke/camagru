@@ -8,6 +8,11 @@ const renderRegisterError = (errArr) => {
     errArr.length = 0;
 }
 
+const validateEmail = (emailValue) => {
+    const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(emailValue).toLowerCase());
+}
+
 elRegister.onclick = () => {
     const elRegisterUsername = document.getElementById('register-username');
     const elRegisterEmail = document.getElementById('register-mail');
@@ -20,18 +25,23 @@ elRegister.onclick = () => {
     if (elRegisterEmail.value === "") {
         errArr.push("Emailaddress can't be empty");
     }
+    if (!validateEmail(elRegisterEmail.value)) {
+        errArr.push("The email you have entered is not valid");
+    }
     if (elRegisterPassword.value === "") {
         errArr.push("Password can't be empty");
     }
     if (elRegisterRepPassword.value !== elRegisterPassword.value) {
         errArr.push("Passwords do not match");
     }
+    if (elRegisterPassword.value.length < 6) {
+        errArr.push("Password requires at least 6 characters");
+    }
     if (errArr.length > 0) {
         renderRegisterError(errArr);
         return null;
     }
 
-    // Make ajax object to send data to php api
     const dataRegisterObject = {
         'username': elRegisterUsername.value,
         'emailaddress': elRegisterEmail.value,

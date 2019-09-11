@@ -1,30 +1,14 @@
 Camagru project
 
-
-
 WIP
 
-
-LOGIN / REGISTER
+DASHBOARD
 _______________________________________________________________________________________________________________________________________________
 
-- Password of minimum 6 characters
-- Error if password is not strong enough
-
-
-
+- Delete uploaded images
 
 
 TODO
-
-
-NAVBAR
-_______________________________________________________________________________________________________________________________________________
-
-- Entire nabber refactoring to javascript and php (could be done using only JS I think) except for admins.
-- Rename dashboard in navbar to username???
-
-
 
 CREATE PHOTO
 _______________________________________________________________________________________________________________________________________________
@@ -56,7 +40,7 @@ ________________________________________________________________________________
 
 NOTES?
 
-Firstly finish the create_photo.php in it’s entirety since a lot of the same things will be used in upload_photo.php.
+First finish the create_photo.php in it’s entirety since a lot of the same things will be used in upload_photo.php.
 Feedback could be done by changing the color and innerHTML of the button
 
 
@@ -64,14 +48,13 @@ Feedback could be done by changing the color and innerHTML of the button
 DASHBOARD
 _______________________________________________________________________________________________________________________________________________
 
-- Update user information like email, password, username etc.
 - Delete uploaded images
-- Edit uploaded image so one can choose other watermarks for instance.
-- Fix the sidebar so it doesn’t slide downwards with each photo row.
+- Edit uploaded image so one can choose other watermarks for the photo.
+- Change the photogrid system to a foreach loop. (use display: grid )
 
 NOTES?
 
-Keep in mind the password has to be at least 6 characters long.
+When updating password, keep in mind the password has to be at least 6 characters long.
 
 
 
@@ -93,9 +76,8 @@ None. Pretty self-explanatory
 LOGIN / REGISTER
 _______________________________________________________________________________________________________________________________________________
 
+- Forgot password or change password buttons.
 - Submit form while pressing enter?
-- Password of minimum 6 characters
-- Error if password is not strong enough
 
 NOTES?
 
@@ -106,7 +88,4 @@ This may be a little hard to do to figure out which form has been submitted.
 DESIGN
 _______________________________________________________________________________________________________________________________________________
 
-- Refactor design to mostly fat black lettering.
-- Lots of white.
-- And a small pastel colour of choice.
 - Design should be fully responsive, which it obviously is not yet.

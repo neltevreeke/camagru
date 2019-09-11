@@ -42,6 +42,7 @@ class User {
         if ($stmt->rowCount() > 0) {
             return true;
         }
+
         return false;
     }
 
@@ -99,7 +100,6 @@ class User {
             $body = $htmlStr;
 
             if (mail($recipient_email, $subject, $body, $headers)) {
-                // Return true if link has been clicked and user updated
                 $query = "UPDATE " . $this->tableName . "
                         SET
                         code = ?
@@ -148,6 +148,98 @@ class User {
         return $result[0]['id'];
     }
 
+    public function getUser ($userId) {
+        $stmt = $this->conn->prepare("SELECT * FROM users WHERE id = ? AND verified = '1'");
+        $stmt->execute(array($userId));
+
+        if ($stmt->rowCount() > 0) {
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            unset($row['password']);
+            
+            return $row;
+        } else {
+            return false;
+        }
+    }
+
+    public function updateUser($userId, $updateFields) {
+        $updateQuery = "";
+
+        foreach ($updateFields as $field) {
+            $field = htmlspecialchars(strip_tags($field));
+        }
+
+        if (isset($updateFields->username)) {
+            $updateQuery .= " SET `username` = '" . $updateFields->username . "'";
+        }
+
+        if (isset($updateFields->email)) {
+            $updateQuery .= " SET `email` = '" . $updateFields->email . "'";
+        }
+
+        if (isset($updateFields->password)) {
+            $newPassword = password_hash($updateFields->password, PASSWORD_BCRYPT);
+
+            $updateQuery .= " SET `password` = '" . $newPassword . "'";
+        }
+
+        if ($updateQuery != "") {
+            $query = "UPDATE " . $this->tableName .
+                    $updateQuery . " WHERE id = ? LIMIT 1";
+            
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute(array($userId));
+            
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function notifyUserChanges($userId, $updateFields) {
+        $query = "SELECT `email`, `username` FROM `users` 
+                WHERE id=? LIMIT 1";
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->execute(array($userId));
+
+        if ($stmt->rowCount() <= 0) {
+            return false;
+        } else {
+            $recipient = $stmt->fetch();
+        }
+
+        $recipientOldEmail = $recipient['email'];
+        $recipientOldUsername = $recipient['username'];
+
+        $name = "Camagru";
+        $email_sender = "no-reply@camagru.com";
+        $subject = "Camagru | Changes to your account";
+        $body = "";
+        $body .= "Hi " . $recipientOldUsername . ", <br/><br/>";
+        $body .= "We are sending you this email to notify the changes to your account. <br/>";
+
+        $headers  = "MIME-Version: 1.0\r\n";
+        $headers .= "Content-type: text/html; charset=iso-8859-1\r\n";
+        $headers .= "From: {$name} <{$email_sender}> \n";
+
+        if (isset($updateFields->username)) {
+            $body .= "We have changed your username from " . $recipientOldUsername . " to " . $updateFields->username . ". <br/><br/>";
+        }
+
+        if (isset($updateFields->email)) {
+            $body .= "We have changed your email from " . $recipientOldEmail . " to " . $updateFields->email . ". <br/><br/>";
+        }
+
+        if (isset($updateFields->password)) {
+            $body .= "We have changed your password to your new password, you are now able to login with your new password. <br/><br/>";
+        }
+
+        $body .= "Kind regards,<br />";
+        $body .= "Camagru";
+
+        mail($recipientOldEmail, $subject, $body, $headers);
+    }
 }
 
 ?>

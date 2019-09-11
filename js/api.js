@@ -14,6 +14,10 @@ window.API_URL = 'http://localhost:8100/api/';
         
         if (!hasFormData) {
             options.headers['Content-Type'] = 'application/json';
+
+            if (options.body) {
+                options.body = JSON.stringify(options.body);
+            }
         }
 
         if (token) {
