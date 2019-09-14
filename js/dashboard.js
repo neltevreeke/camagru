@@ -56,7 +56,8 @@
             const photoOptionsEdit = document.createElement('span');
             photoOptionsSpan.classList.add('wat');
             photoOptionsDel.setAttribute('class', 'fa fa-trash');
-            photoOptionsDel.setAttribute('id', 'delete-photo');
+            photoOptionsDel.setAttribute('id', id);
+            photoOptionsDel.addEventListener('click', deletePhotoClickHandler);
 
             photoOptionsEdit.setAttribute('class', 'fa fa-edit');
             photoOptionsEdit.setAttribute('id', 'edit-photo');
@@ -84,6 +85,21 @@
             }
             i++;
         }
+    }
+
+    const deletePhotoClickHandler = async () => {
+        id = event.target.id;
+
+        const res = await window.fetchAPI('photo/delete_photo.php', {
+            method: 'POST',
+            body: id
+        });
+
+        if (res.message !== 'Success') {
+            return null;
+        }
+
+        renderPhotos();
     }
 
     const renderAccountDetails = () => {
