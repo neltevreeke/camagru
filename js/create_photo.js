@@ -9,9 +9,7 @@
     const karate = document.getElementById('karate');
     const work = document.getElementById('work');
     let flag = 0;
-
-    // const clickedImage = document.getElementsByTagName('IMG');
-
+    
     // Access webcam
     async function init() {
         const stream = await navigator.mediaDevices.getUserMedia({

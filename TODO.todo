@@ -2,10 +2,6 @@ Camagru project
 
 WIP
 
-DASHBOARD
-_______________________________________________________________________________________________________________________________________________
-
-- Delete uploaded images
 
 
 TODO
@@ -48,13 +44,8 @@ Feedback could be done by changing the color and innerHTML of the button
 DASHBOARD
 _______________________________________________________________________________________________________________________________________________
 
-- Delete uploaded images
 - Edit uploaded image so one can choose other watermarks for the photo.
 - Change the photogrid system to a foreach loop. (use display: grid )
-
-NOTES?
-
-When updating password, keep in mind the password has to be at least 6 characters long.
 
 
 
