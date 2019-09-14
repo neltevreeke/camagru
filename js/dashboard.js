@@ -27,12 +27,14 @@
     }
 
     // TODO: just use a foreach, don't use rows to create a grid layout, just use display: grid instead, check @ https://css-tricks.com/snippets/css/complete-guide-grid/
-    const renderPhotos = (res) => {
+    const renderPhotos = async () => {
+        const res = await window.fetchAPI('photo/get_photo.php');
+
         if (res.message === "No photos found") {
             renderMessage(res.message);
             return null;
         }
-    
+
         let parentDiv = document.createElement('div');
         parentDiv.setAttribute('class', 'user-photos-row');
     
@@ -100,6 +102,7 @@
         }
 
         renderPhotos();
+        window.location.href = 'http://localhost:8100/dashboard.php';
     }
 
     const renderAccountDetails = () => {
@@ -189,9 +192,9 @@
         });
     });
         
-    async function initialize () {
-        const photos = await window.fetchAPI('photo/get_photo.php');
-        renderPhotos(photos);
+    function initialize () {
+        // const photos = await window.fetchAPI('photo/get_photo.php');
+        renderPhotos();
         renderAccountDetails();
     }
 
