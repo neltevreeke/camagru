@@ -15,7 +15,8 @@
                     <img src="img/work.png" id="work" />
                 </div>
             </div>
-
+            <div class="overlay-error" id="overlay-error">
+            </div>
             <div class="capture-wrap">
                 <div class="video-wrap">
                     <video id="video" playsinline autoplay></video>

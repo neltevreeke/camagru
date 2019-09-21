@@ -4,22 +4,13 @@
     const snap = document.getElementById("snap");
     const save = document.getElementById('save');
 
+    const elError = document.getElementById('overlay-error');
+
     const tiger = document.getElementById('tiger');
     const house = document.getElementById('house');
     const karate = document.getElementById('karate');
     const work = document.getElementById('work');
     let flag = 0;
-    
-    // Access webcam
-    async function init() {
-        const stream = await navigator.mediaDevices.getUserMedia({
-            video: {
-                width: 500, height: 480
-            }
-        });
-        window.stream = stream;
-        video.srcObject = stream;
-    }
 
     // Draw image
     const context = canvas.getContext('2d');
@@ -27,9 +18,19 @@
         context.drawImage(video, 0, 0, 500, 480);
     });
 
+    const showErrorMessage = (message) => {
+        elError.innerHTML = message;
+    }
+
     // Save image
-    save.addEventListener("click", function () {
-        canvas.toBlob(function(blob) {
+    save.addEventListener("click", () => {
+
+        if (flag === 0) {
+            showErrorMessage('No overlay image selected');
+            return null;
+        }
+
+        canvas.toBlob((blob) => {
             let formData = new FormData();
             formData.append("image", blob);
 
@@ -74,11 +75,22 @@
         if (flag === 0) {
             work.classList.toggle('selected');
             flag = 4;
-        }else if (flag === 4) {
+        } else if (flag === 4) {
             work.classList.toggle('selected');
             flag = 0;
         }
     };
+
+    // Access webcam
+    async function init() {
+        const stream = await navigator.mediaDevices.getUserMedia({
+            video: {
+                width: 500, height: 480
+            }
+        });
+        window.stream = stream;
+        video.srcObject = stream;
+    }
 
     // Load init
     init();
