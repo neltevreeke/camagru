@@ -1,5 +1,5 @@
 (function () {
-    const mainWrapper = document.getElementById('main-wrapper');
+    const elPhotos = document.getElementById('photos');
     const userSidebar = document.getElementById('user-sidebar');
 
     const elUserTitle = document.getElementById('user-title');
@@ -18,37 +18,30 @@
     const newPassword = document.getElementById('new-password-value');
     const newPasswordRepeat = document.getElementById('new-password-repeat-value');
 
+    let photosCache = null;
+
     const renderMessage = (message) => {
         const messageDiv = document.createElement('div');
         messageDiv.setAttribute('class', 'photo-message');
+        messageDiv.setAttribute('class', 'photos');
     
         messageDiv.innerHTML = message;
-        mainWrapper.insertBefore(messageDiv, userSidebar);
+        elPhotos.insertBefore(messageDiv, userSidebar);
     }
 
-    // TODO: just use a foreach, don't use rows to create a grid layout, just use display: grid instead, check @ https://css-tricks.com/snippets/css/complete-guide-grid/
-    const renderPhotos = async () => {
-        const res = await window.fetchAPI('photo/get_photo.php');
+    const renderPhotos = (photos) => {
 
-        if (res.message === "No photos found") {
-            renderMessage(res.message);
-            return null;
-        }
-
-        let parentDiv = document.createElement('div');
-        parentDiv.setAttribute('class', 'user-photos-row');
-    
-        i = 0;
-        j = 0;
+        elPhotos.innerHTML = "";
         
-        while (i < res.photos.length) {
+        photos.forEach(photo => {
+            const { id } = photo;
+
             const photoCard = document.createElement('div');
             photoCard.classList.add('user-photo-card');
-        
+
             const photoImage = document.createElement('div');
             const image = document.createElement('img');
-
-            const id = res.photos[i].id;
+            
             image.setAttribute('src', '/api/photo/photo.php?id=' + id);
             image.setAttribute('style', 'object-fit: cover; width: 100%; height: 100%; border-radius: 3px;');
 
@@ -59,39 +52,27 @@
             photoOptionsSpan.classList.add('wat');
             photoOptionsDel.setAttribute('class', 'fa fa-trash');
             photoOptionsDel.setAttribute('id', id);
-            photoOptionsDel.addEventListener('click', deletePhotoClickHandler);
 
+            photoOptionsDel.addEventListener('click', handleDeletePhotoClick(photo));
             photoOptionsEdit.setAttribute('class', 'fa fa-edit');
             photoOptionsEdit.setAttribute('id', 'edit-photo');
         
             photoOptions.classList.add('photo-options');
-    
-            mainWrapper.appendChild(parentDiv);
-            parentDiv.appendChild(photoCard);
-        
             photoCard.appendChild(photoImage);
             photoCard.appendChild(photoOptions);
-        
+
             photoImage.appendChild(image);
             photoOptions.appendChild(photoOptionsSpan);
             photoOptionsSpan.appendChild(photoOptionsDel);
             photoOptionsSpan.appendChild(photoOptionsEdit);
 
-            if (j >= 2) {
-                parentDiv = document.createElement('div');
-                parentDiv.setAttribute('class', 'user-photos-row');
-                parentDiv.setAttribute('id', 'user-photos-row');
-                j = 0;
-            } else {
-                j++;
-            }
-            i++;
-        }
+            elPhotos.appendChild(photoCard);
+        });
     }
 
-    const deletePhotoClickHandler = async () => {
-        id = event.target.id;
-
+    const handleDeletePhotoClick = photo => async () => {
+        const { id } = photo;
+        
         const res = await window.fetchAPI('photo/delete_photo.php', {
             method: 'POST',
             body: id
@@ -101,8 +82,9 @@
             return null;
         }
 
-        renderPhotos();
-        window.location.href = 'http://localhost:8100/dashboard.php';
+        photosCache = photosCache.filter(p => p.id !== id);
+
+        renderPhotos(photosCache);
     }
 
     const renderAccountDetails = () => {
@@ -192,10 +174,19 @@
         });
     });
         
-    function initialize () {
-        // const photos = await window.fetchAPI('photo/get_photo.php');
-        renderPhotos();
+    async function initialize () {
         renderAccountDetails();
+
+        const res = await window.fetchAPI('photo/get_photo.php');
+        
+        if (res && res.message === "No photos found") {
+            renderMessage(photos.message);
+            return null;
+        }
+
+        photosCache = res.photos;
+
+        renderPhotos(res.photos);
     }
 
     window.onInitialized(() => initialize());

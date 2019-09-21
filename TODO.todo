@@ -1,7 +1,5 @@
 Camagru project
 
-WIP
-
 
 
 TODO
@@ -45,7 +43,6 @@ DASHBOARD
 _______________________________________________________________________________________________________________________________________________
 
 - Edit uploaded image so one can choose other watermarks for the photo.
-- Change the photogrid system to a foreach loop. (use display: grid )
 
 
 
@@ -67,7 +64,7 @@ None. Pretty self-explanatory
 LOGIN / REGISTER
 _______________________________________________________________________________________________________________________________________________
 
-- Forgot password or change password buttons.
+- Forgot password buttons.
 - Submit form while pressing enter?
 
 NOTES?

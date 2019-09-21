@@ -137,10 +137,26 @@ button:hover {
 
 /* CONTENT WRAPPER */
 
+.main-content {
+    display: flex;
+    width: 1160px;
+    padding: 10px;
+    margin: 0 auto;
+}
+
 .main-wrapper {
     height: auto;
     width: 1000px;
     margin: auto;
+}
+
+#photos {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 10px;
+    margin-right: 10px;
+    flex: 1;
+    align-self: flex-start;
 }
 
 
@@ -293,8 +309,8 @@ button:hover {
 
 /* .grid {
     display: grid;
-    grid-template-columns: 200px 200px 200px;
-    grid-template-rows: 100px;
+    grid-template-columns: 251px 251px 251px 251px;
+    grid-template-rows: 202px; // niet gebruikt
     grid-gap: 10px;
   }
   
@@ -316,12 +332,10 @@ button:hover {
 }
 
 .user-sidebar {
-    margin-top: 50px;
-    height: auto;
-    width: 19%;
-    float: right;
+    height: 550px;
     border: 1px solid black;
     border-radius: 5px;
+    width: 240px;
 }
 
 .user-title p {
@@ -385,9 +399,6 @@ button:hover {
     border-radius: 5px;
     border: 1px solid black;
     height: 200px;
-    width: 250px;
-    margin-right: 10px;
-    float: left;
     position: relative;
 }
 
