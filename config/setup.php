@@ -45,6 +45,7 @@
                                 `data` MEDIUMBLOB NOT NULL,
                                 `likes` int (11) NOT NULL,
                                 `mimeType` varchar(100) NOT NULL,
+                                `watermark` varchar(100),
                                 FOREIGN KEY (`userid`) REFERENCES users(id)
                                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
     $stmt->execute();

@@ -9,10 +9,10 @@
         <div class="main-wrapper" id="main-wrapper">
             <div class="overlay-wrap">
                 <div class="overlay-images">
-                    <img src="img/tiger.png" id="tiger" />
-                    <img src="img/house.png" id="house"/>
-                    <img src="img/karate.png" id="karate"/>
-                    <img src="img/work.png" id="work" />
+                    <img src="watermarks/tiger.png" class="watermarkButton" data-watermark-type="tiger" />
+                    <img src="watermarks/house.png" class="watermarkButton" data-watermark-type="house" />
+                    <img src="watermarks/karate.png" class="watermarkButton" data-watermark-type="karate" />
+                    <img src="watermarks/work.png" class="watermarkButton" data-watermark-type="work" />
                 </div>
             </div>
             <div class="overlay-error" id="overlay-error">

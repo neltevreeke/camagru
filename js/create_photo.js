@@ -5,12 +5,25 @@
     const save = document.getElementById('save');
 
     const elError = document.getElementById('overlay-error');
+    const elWatermarkButtons = document.getElementsByClassName('watermarkButton');
 
-    const tiger = document.getElementById('tiger');
-    const house = document.getElementById('house');
-    const karate = document.getElementById('karate');
-    const work = document.getElementById('work');
-    let flag = 0;
+    let selectedWatermarkType = null;
+    let elSelectedWatermarkType = null;
+
+    const onWatermarkButtonClick = (event) => {
+        if (elSelectedWatermarkType !== null) {
+            elSelectedWatermarkType.classList.remove('selected');
+        }
+
+        const watermarkType = event.target.getAttribute('data-watermark-type').toUpperCase();
+        selectedWatermarkType = watermarkType;
+        elSelectedWatermarkType = event.target;
+        elSelectedWatermarkType.classList.add('selected');
+    }
+
+    Array.from(elWatermarkButtons).forEach(function(elWatermarkButton) {
+        elWatermarkButton.addEventListener('click', onWatermarkButtonClick);
+    });
 
     // Draw image
     const context = canvas.getContext('2d');
@@ -22,17 +35,30 @@
         elError.innerHTML = message;
     }
 
-    // Save image
-    save.addEventListener("click", () => {
+    const isCanvasBlank = (canvas) => {
+        const pixelBuffer = new Uint32Array(
+            context.getImageData(0, 0, canvas.width, canvas.height).data.buffer
+        );
 
-        if (flag === 0) {
+        return !pixelBuffer.some(color => color !== 0);
+    }
+
+    // Save image and watermarktype
+    save.addEventListener("click", () => {
+        if (!selectedWatermarkType) {
             showErrorMessage('No overlay image selected');
+            return null;
+        }
+
+        if (isCanvasBlank(canvas)) {
+            showErrorMessage('Capture an image first');
             return null;
         }
 
         canvas.toBlob((blob) => {
             let formData = new FormData();
-            formData.append("image", blob);
+            formData.append('image', blob);
+            formData.append('watermark', selectedWatermarkType);
 
             window.fetchAPI('photo/upload_photo.php', {
                 method: 'POST',
@@ -40,46 +66,6 @@
             });
         });
     });
-
-    tiger.onclick = () => {
-        if (flag === 0) {
-            tiger.classList.toggle('selected');
-            flag = 1;
-        } else if (flag === 1) {
-            tiger.classList.toggle('selected');
-            flag = 0;
-        }
-    };
-
-    house.onclick = () => {
-        if (flag === 0) {
-            house.classList.toggle('selected');
-            flag = 2;
-        } else if (flag === 2) {
-            house.classList.toggle('selected');
-            flag = 0;
-        }
-    };
-
-    karate.onclick = () => {
-        if (flag === 0) {
-            karate.classList.toggle('selected');
-            flag = 3;
-        } else if (flag === 3) {
-            karate.classList.toggle('selected');
-            flag = 0;
-        }
-    };
-
-    work.onclick = () => {
-        if (flag === 0) {
-            work.classList.toggle('selected');
-            flag = 4;
-        } else if (flag === 4) {
-            work.classList.toggle('selected');
-            flag = 0;
-        }
-    };
 
     // Access webcam
     async function init() {

@@ -19,10 +19,11 @@ ob_end_clean();
 $photo->image = $file;
 $photo->user_id = $userId;
 $mimeType = $_FILES['image']['type'];
+$watermark = $_POST['watermark'];
 
 if ($photo->image) {
     if ($mimeType === 'image/png') {
-        $lastId = $photo->uploadPhoto($mimeType);
+        $lastId = $photo->uploadPhoto($mimeType, $watermark);
         echo json_encode(array("message" => "Success"));
     } else {
         echo json_encode(array("message" => "Wrong file type"));

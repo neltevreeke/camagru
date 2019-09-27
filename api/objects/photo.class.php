@@ -24,12 +24,12 @@ class Photo {
         }
     }
 
-    public function uploadPhoto($mimeType) {
-        $query = "INSERT INTO `photos` (`id`, `userid`, `data`, `likes`, `mimeType`)
-                 VALUES (id, ?, ?, 0, ?)";
+    public function uploadPhoto($mimeType, $watermark) {
+        $query = "INSERT INTO `photos` (`id`, `userid`, `data`, `likes`, `mimeType`, `watermark`)
+                 VALUES (id, ?, ?, 0, ?, ?)";
         $stmt = $this->conn->prepare($query);
 
-        $stmt->execute(array($this->user_id, $this->image, $mimeType));
+        $stmt->execute(array($this->user_id, $this->image, $mimeType, $watermark));
 
         if ($stmt->rowCount() > 0) {
             $id = $this->conn->lastInsertId();
