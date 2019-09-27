@@ -63,6 +63,10 @@
             window.fetchAPI('photo/upload_photo.php', {
                 method: 'POST',
                 body: formData
+            }).then(res => {
+                if (res.message == 'Success') {
+                    window.location.href = 'http://localhost:8100/dashboard.php';
+                }
             });
         });
     });

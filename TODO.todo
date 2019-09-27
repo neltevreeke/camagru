@@ -4,24 +4,6 @@ Camagru project
 
 TODO
 
-CREATE PHOTO
-_______________________________________________________________________________________________________________________________________________
-
-- No watermark png selected, save image button disabled
-- Edit capture image with chosen watermark png
-- Merge watermark png with image in php backend
-- Save watermarked capture to database
-- No empty photo should be allowed to be saved.
-- Feedback when photo has been saved to the database has been successful or failed.
-
-NOTES?
-
-Think about using more modules for the watermark png’s since they will also be used at upload_photo.php, just like the navbar and footer for DRY principle*.
-Think about refactoring code first before starting on any other pages for the modules.
-Feedback could be done by changing the color and innerHTML of the button
-
-
-
 UPLOAD PHOTO
 _______________________________________________________________________________________________________________________________________________
 
