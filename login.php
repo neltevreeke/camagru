@@ -17,6 +17,7 @@
                     <input id = "login-mail" type = "email" placeholder = "Emailaddress" />
                     <input id = "login-password" type = "password" placeholder = "Password" />
                     <button id = "login" type = "button">Log in</button>
+                    <a href="forgot_password.php">Forgot password?</a>
                 </form>
             </div>
             <div class = "register-form">

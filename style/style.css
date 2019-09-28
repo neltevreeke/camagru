@@ -241,6 +241,13 @@ button:hover {
     border-bottom-left-radius: 5px;
 }
 
+.login-form a {
+    color: white;
+    margin-top: 80px;
+    text-decoration: none;
+    display: block;
+}
+
 .register-form {
     margin-top: 50px;
     color: white;
@@ -515,4 +522,47 @@ input[type="file"] {
     margin-top: 50px;
     height: 480px;
     background-color: #666;
+}
+
+/* FORGOT PASSWORD */
+
+.forgot-password {
+    height: auto;
+    width: 50%;
+    margin: auto;
+    background-color: #666;
+    margin-top: 50px;
+    border-radius: 5px;
+    padding: 50px 10px 50px 10px;
+    color: white;
+}
+
+.forgot-password input {
+    width: 50%;
+    margin-top: 20px;
+    padding: 10px 10px;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+}
+
+.forgot-password-title {
+    font-size: 20px;
+    color: white;
+    font-weight: bold;
+    margin: 0;
+}
+
+.forgot-password a {
+    color: white;
+    margin-top: 80px;
+    text-decoration: none;
+    display: block;
+}
+
+.forgot-password-error {
+    width: 100%;
+    color: red;
+    text-align: center;
+    margin-top: 25px;
 }
