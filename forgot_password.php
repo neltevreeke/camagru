@@ -20,6 +20,7 @@
         </div>
 
         <?php include_once ('./modules/footer.php'); ?>
+        <script src=".\js\forgot_password.js"></script>
     </body>
 
 </html>
