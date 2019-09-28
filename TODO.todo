@@ -7,17 +7,7 @@ TODO
 UPLOAD PHOTO
 _______________________________________________________________________________________________________________________________________________
 
-- Uploading should be done by being able to drop an image on the drop field or using the upload button
 - Preview image in the field
-- Save image button disabled if no watermark png is selected
-- Merge watermark png with image in php backend
-- Save watermarked upload to database
-- Feedback when photo has been saved to the database has been successful or failed.
-
-NOTES?
-
-First finish the create_photo.php in it’s entirety since a lot of the same things will be used in upload_photo.php.
-Feedback could be done by changing the color and innerHTML of the button
 
 
 
