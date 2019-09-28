@@ -18,7 +18,7 @@
             <div class="overlay-error" id="overlay-error">
             </div>
             <div class="capture-wrap">
-                <div class="video-wrap">
+                <div class="video-wrap" id="video-wrap">
                     <video id="video" playsinline autoplay></video>
                 </div>
 

@@ -7,6 +7,10 @@
     const elError = document.getElementById('overlay-error');
     const elWatermarkButtons = document.getElementsByClassName('watermarkButton');
 
+    // const elUploadButton = document.getElementById('upload-button');
+    // const elUploadInput = document.getElementById('upload-input');
+    const elVideoWrap = document.getElementById('video-wrap');
+
     let selectedWatermarkType = null;
     let elSelectedWatermarkType = null;
 
@@ -43,6 +47,34 @@
         return !pixelBuffer.some(color => color !== 0);
     }
 
+    const handleUploadPhotoClick = () => {
+        const elUploadInput = document.getElementById('upload-input');
+        const file = elUploadInput.files[0];
+
+        if (!selectedWatermarkType) {
+            showErrorMessage('No overlay image selected');
+            return null;
+        }
+
+        if (!file) {
+            showErrorMessage('There is no file to upload');
+            return null;
+        }
+
+        let formData = new FormData();
+        formData.append('image', file);
+        formData.append('watermark', selectedWatermarkType);
+
+        window.fetchAPI('photo/upload_photo.php', {
+            method: 'POST',
+            body: formData
+        }).then(res => {
+            if (res.message == 'Success') {
+                window.location.href = 'http://localhost:8100/dashboard.php';
+            }
+        });
+    };
+
     // Save image and watermarktype
     save.addEventListener("click", () => {
         if (!selectedWatermarkType) {
@@ -71,13 +103,39 @@
         });
     });
 
+
     // Access webcam
     async function init() {
         const stream = await navigator.mediaDevices.getUserMedia({
             video: {
                 width: 500, height: 480
             }
+        }).catch((err) => {
+            elVideoWrapContent = document.createElement('div');
+            elVideoWrapText = document.createElement('p');
+            elVideoWrapInput = document.createElement('input');
+            elVideoWrapUploadButton = document.createElement('button');
+
+            elVideoWrapContent.setAttribute('class', 'video-wrap-content');
+            elVideoWrapText.innerHTML = 'Drag and drop or upload an image from your disk';
+
+            elVideoWrapInput.setAttribute('type', 'file');
+            elVideoWrapInput.setAttribute('accept', 'image/png, image/jpg');
+            elVideoWrapInput.setAttribute('id', 'upload-input');
+
+            elVideoWrapUploadButton.setAttribute('id', 'upload-button');
+            elVideoWrapUploadButton.addEventListener('click', handleUploadPhotoClick);
+            elVideoWrapUploadButton.innerHTML = 'Upload image';
+
+
+            elVideoWrap.insertBefore(elVideoWrapContent, video);
+            elVideoWrapContent.appendChild(elVideoWrapText);
+            elVideoWrapContent.appendChild(elVideoWrapInput);
+            elVideoWrapContent.appendChild(elVideoWrapUploadButton);
+
+            return null;
         });
+        
         window.stream = stream;
         video.srcObject = stream;
     }

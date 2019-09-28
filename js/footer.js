@@ -4,12 +4,10 @@ const elFooterUpload = document.getElementById('footer-upload');
 
 const displayFooter = () => {
     elFooterCapture.classList.add('footer-visible');
-    elFooterUpload.classList.add('footer-visible');
 }
 
 const hideFooter = () => {
     elFooterCapture.classList.remove('footer-visible');
-    elFooterUpload.classList.remove('footer-visible');
 }
 
 const determineLogin = () => {

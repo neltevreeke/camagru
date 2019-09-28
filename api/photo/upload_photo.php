@@ -22,7 +22,7 @@ $mimeType = $_FILES['image']['type'];
 $watermark = $_POST['watermark'];
 
 if ($photo->image) {
-    if ($mimeType === 'image/png') {
+    if ($mimeType === 'image/png' || $mimeType === 'image/jpg') {
         $lastId = $photo->uploadPhoto($mimeType, $watermark);
         echo json_encode(array("message" => "Success"));
     } else {
