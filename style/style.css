@@ -419,7 +419,7 @@ button:hover {
 
 .photo-options .fa-edit{
     font-size: 28px;
-    color: black;
+    color: white;
     margin-top: 7px;
     float: right;
     margin-right: 10px;
@@ -428,7 +428,7 @@ button:hover {
 
 .photo-options .fa-trash {
     font-size: 28px;
-    color: black;
+    color: white;
     margin-top: 5px;
     float: right;
     margin-right: 10px;
@@ -565,4 +565,17 @@ input[type="file"] {
     color: red;
     text-align: center;
     margin-top: 25px;
+}
+
+/* EDIT PHOTO */
+
+.photo-to-edit {
+    width: 500;
+    height: auto;
+    margin: 0 auto;
+    padding: 50px 10px 50px 10px;
+}
+
+.photo-to-edit button {
+    width: 30%;
 }

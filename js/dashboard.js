@@ -50,13 +50,15 @@
             const photoOptionsDel = document.createElement('span');
             const photoOptionsEdit = document.createElement('span');
             photoOptionsSpan.classList.add('wat');
+
             photoOptionsDel.setAttribute('class', 'fa fa-trash');
             photoOptionsDel.setAttribute('id', id);
-
             photoOptionsDel.addEventListener('click', handleDeletePhotoClick(photo));
+
             photoOptionsEdit.setAttribute('class', 'fa fa-edit');
             photoOptionsEdit.setAttribute('id', 'edit-photo');
-        
+            photoOptionsEdit.addEventListener('click', handleEditPhotoClick(photo));
+
             photoOptions.classList.add('photo-options');
             photoCard.appendChild(photoImage);
             photoCard.appendChild(photoOptions);
@@ -85,6 +87,12 @@
         photosCache = photosCache.filter(p => p.id !== id);
 
         renderPhotos(photosCache);
+    }
+
+    const handleEditPhotoClick = photo => async () => {
+        const { id } = photo;
+
+        window.location.href = 'http://localhost:8100/edit_photo.php?photoid=' + id;
     }
 
     const renderAccountDetails = () => {
