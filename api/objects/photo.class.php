@@ -38,6 +38,17 @@ class Photo {
             return false;
         }
     }
+
+    public function editPhoto($watermark, $photoId) {
+        $query = "UPDATE " . $this->tableName . " SET watermark=? WHERE id=? AND userid=?";
+        $stmt = $this->conn->prepare($query);
+        
+        if ($stmt->execute(array($watermark, $photoId, $this->user_id))) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
 
 ?>

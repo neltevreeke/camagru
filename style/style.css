@@ -569,13 +569,14 @@ input[type="file"] {
 
 /* EDIT PHOTO */
 
-.photo-to-edit {
-    width: 500;
-    height: auto;
+.edit-photo-container {
+    width: 480px;
+    height: 400px;
     margin: 0 auto;
+    margin-bottom: 50px;
     padding: 50px 10px 50px 10px;
 }
 
-.photo-to-edit button {
+.edit-photo-container button {
     width: 30%;
 }

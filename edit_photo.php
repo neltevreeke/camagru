@@ -17,14 +17,13 @@
             </div>
             <div class="overlay-error" id="overlay-error">
             </div>
-            <div class="photo-to-edit">
-                <img />
-                <button>Update photo</button>
+            <div id="edit-photo-container" class="edit-photo-container">
+                <button id="edit-photo-update-button">Update photo</button>
             </div>
         </div>
         <?php include_once ('./modules/footer.php'); ?>
         <script src=".\js\api.js"></script>
         <script src=".\js\user.js"></script>
-        <!-- <script src=".\js\edit_photo.js"></script> -->
+        <script src=".\js\edit_photo.js"></script>
     </body>
 </html>
