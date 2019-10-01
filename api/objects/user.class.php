@@ -240,6 +240,52 @@ class User {
 
         mail($recipientOldEmail, $subject, $body, $headers);
     }
+
+    public function resetPassword($email) {
+        $query = "SELECT * FROM `users` 
+                WHERE email=? LIMIT 1";
+        $stmt = $this->conn->prepare($query);
+        
+        $stmt->execute(array($email));
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $userId = $result['id'];
+        $verificationCode = $result['code'];
+        $username = $result['username'];
+
+        $verificationCode = $userId . "." . $verificationCode;
+        
+        if ($stmt->rowCount() > 0) {
+            $verificationCode = base64_encode($verificationCode);
+
+            $verificationLink = "http://localhost:8100/reset_password.php?code=" . $verificationCode;
+
+            $name = "Camagru";
+            $email_sender = "no-reply@camagru.com";
+            $recipientEmail = $email;
+            $subject = "Password reset";
+
+            $body = "";
+            $body .= "Dear " . $username . ", <br/><br/>";
+            $body .= "We are sending you this email with a link to reset your password. <br/>";
+            $body .= $verificationLink . " <br/><br/>";
+            $body .= "In case you did not request a password reset, we advice you to do nothing with this email. <br/><br/>";
+            $body .= "Kind regards,<br />";
+            $body .= "Camagru";
+
+            $headers  = "MIME-Version: 1.0\r\n";
+            $headers .= "Content-type: text/html; charset=iso-8859-1\r\n";
+            $headers .= "From: {$name} <{$email_sender}> \n";
+
+            mail($recipientEmail, $subject, $body, $headers);
+
+            return true;
+        } else {
+
+            return false;
+        }
+
+    }
 }
 
 ?>

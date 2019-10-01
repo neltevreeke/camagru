@@ -15,16 +15,18 @@ const clearInputField = () => {
     elForgotPasswordInput.value = "";
 }
 
-async function sendEmailToAPI(email) {
-    await fetch('http://localhost:8100/api/user/reset_password.php', {
+function sendEmailToAPI(email) {
+    fetch('http://localhost:8100/api/user/forgot_password.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(email)
         })
-
-   showErrorMessage("An email to reset your password has been sent");
+    .then(res => res.json())
+    .then(res => {
+        showErrorMessage(res.message + " to " + email);
+    })
 }
 
 elForgotPasswordButton.addEventListener('click', () => {

@@ -8,13 +8,25 @@ header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-$token = $_SERVER["HTTP_X_TOKEN"];
-$userId = decryptToken($token);
-$userId = json_decode($userId);
-$userId = $userId->user_id;
-
 $jsonString = file_get_contents('php://input');
 $jsonDecode = json_decode($jsonString);
+
+if (isset($_SERVER["HTTP_X_TOKEN"])) {
+    $token = $_SERVER["HTTP_X_TOKEN"];
+
+    $userId = decryptToken($token);
+    $userId = json_decode($userId);
+    $userId = $userId->user_id;
+} else {
+    $tmpObj = $jsonDecode;
+
+    $jsonDecode = base64_decode($jsonDecode->get);
+    $tmp = explode('.', $jsonDecode);
+    $userId = $tmp[0];
+
+    $jsonDecode = $tmpObj;
+}
+
 
 // Gets new database instance and saves connection
 $database = new Database();
