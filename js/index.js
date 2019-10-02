@@ -1,6 +1,7 @@
 (function () {
     const elPhotosContainer = document.getElementById('photos');
     let likesCache = null;
+    let liked = null;
 
     async function getUsername (id) {
         return fetch('http://localhost:8100/api/user/get_user.php', {
@@ -20,7 +21,7 @@
         });
 
         likesCache = document.getElementById('item-like-p-' + updatedFields.like);
-
+        
         likesCache.innerHTML = res.likes;
 
         const itemLikeSpan = document.createElement('span');
@@ -37,9 +38,19 @@
             return;
         }
 
-        await submitLike({
-            like: id
-        });
+        if (!liked) {
+            liked = true;
+
+            await submitLike({
+                like: id
+            });
+        } else if (liked) {
+            liked = false;
+
+            await submitLike({
+                unlike: id
+            });
+        }
     }
 
     const renderPhotos = (photos) => {

@@ -68,14 +68,20 @@ class Photo {
         if (isset($updatedFields->like)) {
             $query = "UPDATE " . $this->tableName . " SET likes = likes + 1 WHERE id=?";
         }
-
+        
+        if (isset($updatedFields->unlike)) {
+            $query = "UPDATE " . $this->tableName . " SET likes = likes - 1 WHERE id=?";
+        }
+        
         if (isset($updatedFields->comment)) {
             $query = "";
         }
-
-        $stmt = $this->conn->prepare($query);
         
-        if ($stmt->execute(array($updatedFields->like))) {
+        $stmt = $this->conn->prepare($query);
+
+        if (isset($updatedFields->like)) {
+            $stmt->execute(array($updatedFields->like));
+
             $query = "SELECT likes FROM " . $this->tableName . " WHERE id=?";
             $stmt = $this->conn->prepare($query);
 
@@ -83,8 +89,18 @@ class Photo {
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
             
             return $result[0]["likes"];
-        } else {
-            return false;
+        }
+
+        if (isset($updatedFields->unlike)) {
+            $stmt->execute(array($updatedFields->unlike));
+
+            $query = "SELECT likes FROM " . $this->tableName . " WHERE id=?";
+            $stmt = $this->conn->prepare($query);
+
+            $stmt->execute(array($updatedFields->unlike));
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            return $result[0]["likes"];
         }
     }
 }

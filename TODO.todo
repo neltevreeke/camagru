@@ -19,13 +19,11 @@ HOMEPAGE
 _______________________________________________________________________________________________________________________________________________
 
 - Sorting, new to last.
-- Only logged in users should be able to comment.
 - Comments should be visible even when not logged in.
 
 NOTES?
 
 it now sorts from last to new.
-dont show comment input at all if they are not logged in???
 
 
 DESIGN
