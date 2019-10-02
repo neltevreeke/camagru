@@ -4,7 +4,7 @@ window.user = null;
     let isInitialized = false;
     let listeners = [];
 
-    const getMe = () => {
+    async function getMe () {
         // !!token === token ? token : false;
         const isLoggedIn = !!token;
     
@@ -12,7 +12,10 @@ window.user = null;
             return;
         }
 
-        return window.fetchAPI('user/get_me.php');
+        const res = await window.fetchAPI('user/get_me.php');
+        window.user = res;
+        isInitialized = true;
+        triggerListeners();
     }
 
     function triggerListeners () {
@@ -22,12 +25,7 @@ window.user = null;
     }
 
     function initialize () {
-        getMe()
-            .then(res => {
-                window.user = res
-                isInitialized = true;
-                triggerListeners();
-            })
+        getMe();
     }
 
     // Use this function to execute callbacks when getMe has been done (window.user has been set)

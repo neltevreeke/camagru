@@ -17,6 +17,20 @@ class Photo {
         $stmt = $this->conn->prepare($query);
 
         $stmt->execute(array($this->user_id));
+        
+        if ($stmt->rowCount() > 0) {
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            return false;
+        }
+    }
+
+    public function getAllPhotos() {
+        $query = "SELECT id, userid, likes FROM " . $this->tableName. "";
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->execute();
+
         if ($stmt->rowCount() > 0) {
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } else {

@@ -41,7 +41,7 @@
 
             const photoImage = document.createElement('div');
             const image = document.createElement('img');
-            
+
             image.setAttribute('src', '/api/photo/photo.php?id=' + id);
             image.setAttribute('style', 'object-fit: cover; width: 100%; height: 100%; border-radius: 3px;');
 

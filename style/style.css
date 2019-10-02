@@ -137,11 +137,21 @@ button:hover {
     margin-right: 10px;
     flex: 1;
     align-self: flex-start;
+    margin-bottom: 50px;
 }
 
 
 /* CONTENT ITEM PHOTO */
 
+.comment-input-button {
+    float: right;
+    width: 20%;
+    margin-top: 0px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+    height: 46px;
+}
 
 .main-row:first-child {
     margin-top: 50px;
@@ -156,12 +166,8 @@ button:hover {
 }
 
 .main-item {
-    width: 31%;
     border-radius: 5px;
     border: 1px solid black;
-    margin-bottom: 50px;
-    float: left;
-    margin-right: 31px;
 }
 
 .item-username {
@@ -217,7 +223,8 @@ button:hover {
 }
 
 .item-place-comment input {
-    width: 100%;
+    width: 80%;
+    float: left;
     padding: 15px;
     margin-bottom: 2px;
     border-top: 1px solid black;
