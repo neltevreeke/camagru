@@ -102,28 +102,33 @@
             //     <p class = "username-comment">Klaasjan Petersen</p>
             //     <p class = "comment-content">Super mooi wauw</p>
             // </div>
-            
+
             const itemCommentSection = document.createElement('div');
+            if (window.user) {
+                
+                const itemCommentInput = document.createElement('input');
+                itemCommentInput.setAttribute('placeholder', 'Add a comment...');
+                itemCommentInput.setAttribute('id', 'item-comment-input');
+                
+                itemCommentSection.appendChild(itemCommentInput);
+                
+                const itemCommentButton = document.createElement('button');
+                itemCommentButton.setAttribute('id', 'comment-input-button');
+                itemCommentButton.setAttribute('class', 'comment-input-button');
+                
+                const itemCommentButtonSpan = document.createElement('span');
+                itemCommentButtonSpan.setAttribute('class', 'fa fa-edit');
+                
+                itemCommentButton.appendChild(itemCommentButtonSpan);
+                
+                itemCommentSection.appendChild(itemCommentButton);
+            }
+            
             itemCommentSection.setAttribute('class', 'item-place-comment');
-
-            const itemCommentInput = document.createElement('input');
-            itemCommentInput.setAttribute('placeholder', 'Add a comment...');
-            itemCommentInput.setAttribute('id', 'item-comment-input');
-
-            itemCommentSection.appendChild(itemCommentInput);
-
-            const itemCommentButton = document.createElement('button');
-            itemCommentButton.setAttribute('id', 'comment-input-button');
-            itemCommentButton.setAttribute('class', 'comment-input-button');
-
-            const itemCommentButtonSpan = document.createElement('span');
-            itemCommentButtonSpan.setAttribute('class', 'fa fa-edit');
-
-            itemCommentButton.appendChild(itemCommentButtonSpan);
-
-            itemCommentSection.appendChild(itemCommentButton);
-
             mainItem.appendChild(itemCommentSection);
+
+//
+
         });
     }
 

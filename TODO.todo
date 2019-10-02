@@ -18,15 +18,14 @@ Not super nessecary but makes it more professional
 HOMEPAGE
 _______________________________________________________________________________________________________________________________________________
 
-- Photos should be visible to anyone accessing the website.
-- Only the user specific photos should be deletable and editable.
 - Sorting, new to last.
-- Only logged in users should be able to comment and like.
-- Comments and likes should be visible even when not logged in.
+- Only logged in users should be able to comment.
+- Comments should be visible even when not logged in.
 
 NOTES?
 
-None. Pretty self-explanatory
+it now sorts from last to new.
+dont show comment input at all if they are not logged in???
 
 
 DESIGN
