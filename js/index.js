@@ -12,10 +12,29 @@
         .then(res => res.json());
     }
 
+    const submitLike = async (updatedFields) => {
+        const res = await window.fetchAPI('photo/update_photo.php', {
+            method: 'POST',
+            body: updatedFields
+        });
+
+        // console.log(updatedFields.like);
+
+
+        // set itemLikeP to new value, itemLikeP.innerHTML = Number(itemLikeP.innerHTML) + 1;
+        // but itemLikeP is not defined yet.
+    }
+
     const handlePhotoLike = photo => async () => {
         const { id } = photo;
 
-        
+        if (!window.user) {
+            return;
+        }
+
+        await submitLike({
+            like: id
+        });
     }
 
     const renderPhotos = (photos) => {

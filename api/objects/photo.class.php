@@ -63,6 +63,24 @@ class Photo {
             return false;
         }
     }
+
+    public function updatePhoto($updatedFields) {
+        if (isset($updatedFields->like)) {
+            $query = "UPDATE " . $this->tableName . " SET likes = likes + 1 WHERE id=?";
+        }
+
+        if (isset($updatedFields->comment)) {
+            $query = "";
+        }
+
+        $stmt = $this->conn->prepare($query);
+        
+        if ($stmt->execute(array($updatedFields->like))) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
 
 ?>
