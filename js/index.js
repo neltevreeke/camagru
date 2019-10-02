@@ -1,5 +1,6 @@
 (function () {
     const elPhotosContainer = document.getElementById('photos');
+    let likesCache = null;
 
     async function getUsername (id) {
         return fetch('http://localhost:8100/api/user/get_user.php', {
@@ -18,11 +19,15 @@
             body: updatedFields
         });
 
-        // console.log(updatedFields.like);
+        likesCache = document.getElementById('item-like-p-' + updatedFields.like);
 
+        likesCache.innerHTML = res.likes;
 
-        // set itemLikeP to new value, itemLikeP.innerHTML = Number(itemLikeP.innerHTML) + 1;
-        // but itemLikeP is not defined yet.
+        const itemLikeSpan = document.createElement('span');
+        itemLikeSpan.setAttribute('class', 'fa fa-heart');
+
+        likesCache.appendChild(itemLikeSpan);
+
     }
 
     const handlePhotoLike = photo => async () => {
@@ -68,6 +73,7 @@
             itemHeader.appendChild(itemLike);
 
             const itemLikeP = document.createElement('p');
+            itemLikeP.setAttribute('id', 'item-like-p-' + id);
             
             itemLikeP.innerHTML = likes;
             

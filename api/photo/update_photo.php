@@ -16,9 +16,12 @@ $db = $database->connect();
 
 $photo = new Photo($db);
 
+// echo json_encode(array("message" => "Success", "user" => $newUser));
+
 if ($jsonDecode) {
-    if ($photo->updatePhoto($jsonDecode)) {
-        echo json_encode(array("message" => "Success"));
+    $newAmountLikes = $photo->updatePhoto($jsonDecode);
+    if ($newAmountLikes) {
+        echo json_encode(array("message" => "Success", "likes" => $newAmountLikes));
     } else {
         echo json_encode(array("message" => "Failed"));
     }

@@ -76,7 +76,13 @@ class Photo {
         $stmt = $this->conn->prepare($query);
         
         if ($stmt->execute(array($updatedFields->like))) {
-            return true;
+            $query = "SELECT likes FROM " . $this->tableName . " WHERE id=?";
+            $stmt = $this->conn->prepare($query);
+
+            $stmt->execute(array($updatedFields->like));
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            return $result[0]["likes"];
         } else {
             return false;
         }
