@@ -1,7 +1,6 @@
 (function () {
     const elPhotosContainer = document.getElementById('photos');
     let likesCache = null;
-    let liked = null;
 
     async function getUsername (id) {
         return fetch('http://localhost:8100/api/user/get_user.php', {
@@ -14,43 +13,81 @@
         .then(res => res.json());
     }
 
-    const submitLike = async (updatedFields) => {
+    const checkLike = async (updatedFields) => {
         const res = await window.fetchAPI('photo/update_photo.php', {
             method: 'POST',
             body: updatedFields
         });
 
-        likesCache = document.getElementById('item-like-p-' + updatedFields.like);
-        
-        likesCache.innerHTML = res.likes;
+        return res.message;
+    }
 
-        const itemLikeSpan = document.createElement('span');
-        itemLikeSpan.setAttribute('class', 'fa fa-heart');
+    const submitForm = async (updatedFields) => {
+        const res = await window.fetchAPI('photo/update_photo.php', {
+            method: 'POST',
+            body: updatedFields
+        });
 
-        likesCache.appendChild(itemLikeSpan);
+        if (updatedFields.action === 'like' || updatedFields.action === 'unlike') {
+            likesCache = document.getElementById('item-like-p-' + updatedFields.photoid);
+            
+            likesCache.innerHTML = res.likes;
+    
+            const itemLikeSpan = document.createElement('span');
+            itemLikeSpan.setAttribute('class', 'fa fa-heart');
+    
+            likesCache.appendChild(itemLikeSpan);
+        }
 
+        if (updatedFields.action === 'comment') {
+            // do stuff
+            console.log(res);
+        }
+    }
+
+    const handleCommentButtonClick = photo => async () => {
+        const { id } = photo;
+        // const { userid } = photo;
+
+        const commentInputField = document.getElementById('item-comment-input-' + id);
+        const commentValue = commentInputField.value;
+
+        if (!commentValue) {
+            // show error
+            return;
+        }
+
+        await submitForm({
+            userid: window.user.id,
+            photoid: id,
+            action: 'comment',
+            comment: commentValue
+        });
     }
 
     const handlePhotoLike = photo => async () => {
         const { id } = photo;
+        let action= 'like';
 
         if (!window.user) {
             return;
         }
 
-        if (!liked) {
-            liked = true;
+        // check if liked photo is already liked if so, action = 'unlike';
+        const res = await checkLike({
+            userid: window.user.id,
+            photoid: id,
+        });
 
-            await submitLike({
-                like: id
-            });
-        } else if (liked) {
-            liked = false;
-
-            await submitLike({
-                unlike: id
-            });
+        if (res === "photo liked") {
+            action = 'unlike';
         }
+
+        await submitForm({
+            userid: window.user.id,
+            photoid: id,
+            action: action
+        });
     }
 
     const renderPhotos = (photos) => {
@@ -85,8 +122,12 @@
 
             const itemLikeP = document.createElement('p');
             itemLikeP.setAttribute('id', 'item-like-p-' + id);
-            
-            itemLikeP.innerHTML = likes;
+
+            if (!likes) {
+                itemLikeP.innerHTML = 0;
+            } else {
+                itemLikeP.innerHTML = likes;
+            }
             
             const itemLikeSpan = document.createElement('span');
             itemLikeSpan.setAttribute('class', 'fa fa-heart');
@@ -119,13 +160,14 @@
                 
                 const itemCommentInput = document.createElement('input');
                 itemCommentInput.setAttribute('placeholder', 'Add a comment...');
-                itemCommentInput.setAttribute('id', 'item-comment-input');
+                itemCommentInput.setAttribute('id', 'item-comment-input-' + id);
                 
                 itemCommentSection.appendChild(itemCommentInput);
                 
                 const itemCommentButton = document.createElement('button');
-                itemCommentButton.setAttribute('id', 'comment-input-button');
+                itemCommentButton.setAttribute('id', 'comment-input-button-' + id);
                 itemCommentButton.setAttribute('class', 'comment-input-button');
+                itemCommentButton.addEventListener('click', handleCommentButtonClick(photo));
                 
                 const itemCommentButtonSpan = document.createElement('span');
                 itemCommentButtonSpan.setAttribute('class', 'fa fa-edit');

@@ -6,6 +6,7 @@ class Photo {
 
     private $conn;
     private $tableName = 'photos';
+    private $likeTable = 'rating_info';
 
     public function __construct($db) {
         return $this->conn = $db;
@@ -26,7 +27,13 @@ class Photo {
     }
 
     public function getAllPhotos() {
-        $query = "SELECT id, userid, likes FROM " . $this->tableName. "";
+        $query = "SELECT photos.id, photos.userid, l.likes
+                FROM photos
+                LEFT OUTER JOIN (
+                    SELECT photo_id, COUNT(*) as likes
+                    FROM rating_info
+                    GROUP BY photo_id
+                ) l ON l.photo_id = photos.id";
         $stmt = $this->conn->prepare($query);
 
         $stmt->execute();
@@ -39,8 +46,8 @@ class Photo {
     }
 
     public function uploadPhoto($mimeType, $watermark) {
-        $query = "INSERT INTO `photos` (`id`, `userid`, `data`, `likes`, `mimeType`, `watermark`)
-                 VALUES (id, ?, ?, 0, ?, ?)";
+        $query = "INSERT INTO `photos` (`id`, `userid`, `data`, `mimeType`, `watermark`)
+                 VALUES (id, ?, ?, ?, ?)";
         $stmt = $this->conn->prepare($query);
 
         $stmt->execute(array($this->user_id, $this->image, $mimeType, $watermark));
@@ -64,44 +71,54 @@ class Photo {
         }
     }
 
-    public function updatePhoto($updatedFields) {
-        if (isset($updatedFields->like)) {
-            $query = "UPDATE " . $this->tableName . " SET likes = likes + 1 WHERE id=?";
-        }
-        
-        if (isset($updatedFields->unlike)) {
-            $query = "UPDATE " . $this->tableName . " SET likes = likes - 1 WHERE id=?";
-        }
-        
-        if (isset($updatedFields->comment)) {
-            $query = "";
-        }
-        
+    public function checkUserLike($updatedFields) {
+        $query = "SELECT * FROM " . $this->likeTable . " WHERE user_id=? AND photo_id=? AND rating_action='like'";
         $stmt = $this->conn->prepare($query);
 
-        if (isset($updatedFields->like)) {
-            $stmt->execute(array($updatedFields->like));
+        $stmt->execute(array($updatedFields->userid, $updatedFields->photoid));
 
-            $query = "SELECT likes FROM " . $this->tableName . " WHERE id=?";
-            $stmt = $this->conn->prepare($query);
+        if ($stmt->rowCount() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-            $stmt->execute(array($updatedFields->like));
-            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            
-            return $result[0]["likes"];
+    public function updatePhotoLikes($updatedFields) {
+        switch ($updatedFields->action) {
+            case 'like':
+                $query = "INSERT INTO " . $this->likeTable . " (user_id, photo_id, rating_action)
+                        VALUES (?, ?, ?)
+                        ON DUPLICATE KEY UPDATE rating_action=" . "'like'";
+                $stmt = $this->conn->prepare($query);
+
+                $stmt->execute(array($updatedFields->userid, $updatedFields->photoid, $updatedFields->action));
+
+                break;
+            case 'unlike':
+                $query = "DELETE FROM " . $this->likeTable . " 
+                        WHERE user_id=? AND photo_id=?";
+                $stmt = $this->conn->prepare($query);
+
+                $stmt->execute(array($updatedFields->userid, $updatedFields->photoid));
+
+                break;
+            default:
+                break;
         }
 
-        if (isset($updatedFields->unlike)) {
-            $stmt->execute(array($updatedFields->unlike));
+        return $this->getLikes($updatedFields);
+    }
 
-            $query = "SELECT likes FROM " . $this->tableName . " WHERE id=?";
-            $stmt = $this->conn->prepare($query);
+    public function getLikes($updatedFields) {
+        $query = "SELECT * FROM " . $this->likeTable . " 
+                WHERE photo_id=? AND rating_action='like'";
+        $stmt = $this->conn->prepare($query);
 
-            $stmt->execute(array($updatedFields->unlike));
-            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            
-            return $result[0]["likes"];
-        }
+        $stmt->execute(array($updatedFields->photoid));
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return count($result);
     }
 }
 

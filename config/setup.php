@@ -43,7 +43,6 @@
                                 `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
                                 `userid` int(11) NOT NULL,
                                 `data` MEDIUMBLOB NOT NULL,
-                                `likes` int (11) NOT NULL,
                                 `mimeType` varchar(100) NOT NULL,
                                 `watermark` varchar(100),
                                 FOREIGN KEY (`userid`) REFERENCES users(id)
@@ -53,12 +52,19 @@
     // Create table comments
     $stmt = $connection->prepare('CREATE TABLE `comments` (
                                 `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                                `imageid` int NOT NULL,
+                                `photoid` int NOT NULL,
                                 `userid` int NOT NULL,
-                                `username` varchar(100) NOT NULL,
-                                `comment` varchar(128) NOT NULL,
+                                `comment` varchar(30) NOT NULL,
                                 FOREIGN KEY (`imageid`) REFERENCES photos(id),
                                 FOREIGN KEY (`userid`) REFERENCES users(id)
+                                ) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
+    $stmt->execute();
+
+    $stmt = $connection->prepare('CREATE TABLE `rating_info` (
+                                `user_id` int(11) NOT NULL,
+                                `photo_id` int(11) NOT NULL,
+                                `rating_action` varchar(30) NOT NULL,
+                                CONSTRAINT UC_rating_info UNIQUE (user_id, photo_id)
                                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
     $stmt->execute();
 

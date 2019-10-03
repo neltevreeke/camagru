@@ -16,14 +16,31 @@ $db = $database->connect();
 
 $photo = new Photo($db);
 
-if ($jsonDecode) {
-    $newAmountLikes = $photo->updatePhoto($jsonDecode);
-    
-    if ($newAmountLikes) {
-        echo json_encode(array("message" => "Success", "likes" => $newAmountLikes));
+if (!isset($jsonDecode->action)) {
+    $userLike = $photo->checkUserLike($jsonDecode);
+
+    if (!$userLike) {
+        echo json_encode(array("message" => "Photo not liked"));
+        return;
+    }
+
+    echo json_encode(array("message" => "photo liked"));
+    return;
+}
+
+if ($jsonDecode->action == "comment") {
+    var_dump($jsonDecode);
+}
+
+if ($jsonDecode->action == "like" || $jsonDecode->action == "unlike") {
+    $totalLikes = $photo->updatePhotoLikes($jsonDecode);
+
+    if ($totalLikes || $totalLikes === 0) {
+        echo json_encode(array("message" => "Success", "likes" => $totalLikes));
     } else {
         echo json_encode(array("message" => "Failed"));
     }
+
 }
 
 ?>
