@@ -29,11 +29,11 @@ if (!isset($jsonDecode->action)) {
 }
 
 if ($jsonDecode->action == "comment") {
-    var_dump($jsonDecode);
+    $photo->updatePhoto($jsonDecode);
 }
 
 if ($jsonDecode->action == "like" || $jsonDecode->action == "unlike") {
-    $totalLikes = $photo->updatePhotoLikes($jsonDecode);
+    $totalLikes = $photo->updatePhoto($jsonDecode);
 
     if ($totalLikes || $totalLikes === 0) {
         echo json_encode(array("message" => "Success", "likes" => $totalLikes));

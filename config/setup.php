@@ -8,7 +8,7 @@
     $connection = $database->connect();
 
 
-    // Drop table comments
+    // Drop table uploads
     $stmt = $connection->prepare('DROP TABLE IF EXISTS `uploads`');
     $stmt->execute();
 
@@ -22,6 +22,10 @@
 
     // Drop table users
     $stmt = $connection->prepare('DROP TABLE IF EXISTS `users`');
+    $stmt->execute();
+
+    // Drop table rating_info
+    $stmt = $connection->prepare('DROP TABLE IF EXISTS `rating_info`');
     $stmt->execute();
 
 
@@ -55,7 +59,7 @@
                                 `photoid` int NOT NULL,
                                 `userid` int NOT NULL,
                                 `comment` varchar(30) NOT NULL,
-                                FOREIGN KEY (`imageid`) REFERENCES photos(id),
+                                FOREIGN KEY (`photoid`) REFERENCES photos(id),
                                 FOREIGN KEY (`userid`) REFERENCES users(id)
                                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
     $stmt->execute();

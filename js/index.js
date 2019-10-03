@@ -57,12 +57,18 @@
             return;
         }
 
+        if (commentValue.length > 30) {
+            // show error
+        }
+
         await submitForm({
             userid: window.user.id,
             photoid: id,
             action: 'comment',
             comment: commentValue
         });
+
+       commentInputField.innerHTML = "";
     }
 
     const handlePhotoLike = photo => async () => {

@@ -7,6 +7,7 @@ class Photo {
     private $conn;
     private $tableName = 'photos';
     private $likeTable = 'rating_info';
+    private $commentTable = 'comments';
 
     public function __construct($db) {
         return $this->conn = $db;
@@ -84,7 +85,7 @@ class Photo {
         }
     }
 
-    public function updatePhotoLikes($updatedFields) {
+    public function updatePhoto($updatedFields) {
         switch ($updatedFields->action) {
             case 'like':
                 $query = "INSERT INTO " . $this->likeTable . " (user_id, photo_id, rating_action)
@@ -101,6 +102,16 @@ class Photo {
                 $stmt = $this->conn->prepare($query);
 
                 $stmt->execute(array($updatedFields->userid, $updatedFields->photoid));
+
+                break;
+            case 'comment':
+                $comment = htmlspecialchars(strip_tags($updatedFields->comment));
+
+                $query = "INSERT INTO comments (photoid, userid, comment) 
+                        VALUES (?, ?, ?)";
+                $stmt = $this->conn->prepare($query);
+                
+                $stmt->execute(array($updatedFields->photoid, $updatedFields->userid, $comment));
 
                 break;
             default:
