@@ -7,11 +7,6 @@
     // Get database connection
     $connection = $database->connect();
 
-
-    // Drop table uploads
-    $stmt = $connection->prepare('DROP TABLE IF EXISTS `uploads`');
-    $stmt->execute();
-
     // Drop table comments
     $stmt = $connection->prepare('DROP TABLE IF EXISTS `comments`');
     $stmt->execute();
