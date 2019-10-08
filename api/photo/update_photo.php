@@ -29,7 +29,12 @@ if (!isset($jsonDecode->action)) {
 }
 
 if ($jsonDecode->action == "comment") {
-    $photo->updatePhoto($jsonDecode);
+    
+    if ($photo->updatePhoto($jsonDecode)) {
+        echo json_encode(array("message" => "Success"));
+    } else {
+        echo json_encode(array("message" => "Failure"));
+    }
 }
 
 if ($jsonDecode->action == "like" || $jsonDecode->action == "unlike") {

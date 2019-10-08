@@ -28,13 +28,22 @@ class Photo {
     }
 
     public function getAllPhotos() {
-        $query = "SELECT photos.id, photos.userid, l.likes
-                FROM photos
-                LEFT OUTER JOIN (
-                    SELECT photo_id, COUNT(*) as likes
-                    FROM rating_info
+        // $query = "SELECT photos.id, photos.userid, l.likes
+        //         FROM photos
+        //         LEFT OUTER JOIN (
+        //             SELECT photo_id, COUNT(*) as likes
+        //             FROM rating_info
+        //             GROUP BY photo_id
+        //         ) l ON l.photo_id = photos.id";
+
+        $query = "SELECT photos.id, photos.userid, c.comment_info
+                FROM photos 
+                LEFT OUTER JOIN ( 
+                    SELECT `photo_id`, GROUP_CONCAT(`user_id`, ':', `comment` SEPARATOR '|') as comment_info
+                    FROM comments
                     GROUP BY photo_id
-                ) l ON l.photo_id = photos.id";
+                ) c ON c.photo_id = photos.id";
+
         $stmt = $this->conn->prepare($query);
 
         $stmt->execute();
@@ -107,17 +116,18 @@ class Photo {
             case 'comment':
                 $comment = htmlspecialchars(strip_tags($updatedFields->comment));
 
-                $query = "INSERT INTO comments (photoid, userid, comment) 
+                $query = "INSERT INTO comments (photo_id, user_id, comment) 
                         VALUES (?, ?, ?)";
                 $stmt = $this->conn->prepare($query);
                 
                 $stmt->execute(array($updatedFields->photoid, $updatedFields->userid, $comment));
 
-                break;
+                return true;
             default:
                 break;
         }
 
+        // not sure about this.
         return $this->getLikes($updatedFields);
     }
 

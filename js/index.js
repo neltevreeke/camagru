@@ -23,6 +23,8 @@
     }
 
     const submitForm = async (updatedFields) => {
+        const commentInputField = document.getElementById('item-comment-input-' + updatedFields.photoid);
+
         const res = await window.fetchAPI('photo/update_photo.php', {
             method: 'POST',
             body: updatedFields
@@ -40,25 +42,28 @@
         }
 
         if (updatedFields.action === 'comment') {
-            // do stuff
-            console.log(res);
+            if (res.message !== 'Success') {
+                console.log('error');
+            }
+
+            commentInputField.innerHTML = "";
         }
     }
 
     const handleCommentButtonClick = photo => async () => {
         const { id } = photo;
-        // const { userid } = photo;
 
         const commentInputField = document.getElementById('item-comment-input-' + id);
         const commentValue = commentInputField.value;
 
         if (!commentValue) {
-            // show error
+            // show error // input border color becomes red
             return;
         }
 
-        if (commentValue.length > 30) {
-            // show error
+        if (commentValue.length > 20) {
+            // show error // input text color becomes red
+            return;
         }
 
         await submitForm({
@@ -67,8 +72,6 @@
             action: 'comment',
             comment: commentValue
         });
-
-       commentInputField.innerHTML = "";
     }
 
     const handlePhotoLike = photo => async () => {
@@ -165,7 +168,7 @@
             if (window.user) {
                 
                 const itemCommentInput = document.createElement('input');
-                itemCommentInput.setAttribute('placeholder', 'Add a comment...');
+                itemCommentInput.setAttribute('placeholder', 'Add a comment of max 20 characters');
                 itemCommentInput.setAttribute('id', 'item-comment-input-' + id);
                 
                 itemCommentSection.appendChild(itemCommentInput);
@@ -194,6 +197,8 @@
     async function init () {
         const res = await fetch('http://localhost:8100/api/photo/get_all_photos.php')
             .then(res => res.json());
+
+            console.log(res);
         renderPhotos(res.photos);
     }
 

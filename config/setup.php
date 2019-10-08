@@ -49,14 +49,21 @@
     $stmt->execute();
 
     // Create table comments
+    // $stmt = $connection->prepare('CREATE TABLE `comments` (
+    //                             `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    //                             `photo_id` int NOT NULL,
+    //                             `user_id` int NOT NULL,
+    //                             `comment` varchar(30) NOT NULL,
+    //                             FOREIGN KEY (`photo_id`) REFERENCES photos(id),
+    //                             FOREIGN KEY (`user_id`) REFERENCES users(id)
+    //                             ) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
+    // $stmt->execute();
+
     $stmt = $connection->prepare('CREATE TABLE `comments` (
-                                `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                                `photoid` int NOT NULL,
-                                `userid` int NOT NULL,
-                                `comment` varchar(30) NOT NULL,
-                                FOREIGN KEY (`photoid`) REFERENCES photos(id),
-                                FOREIGN KEY (`userid`) REFERENCES users(id)
-                                ) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
+                                `user_id` int(11) NOT NULL,
+                                `photo_id` int(11) NOT NULL,
+                                `comment` varchar(30) NOT NULL
+                                ) ENGINE=InnoDB DEFAULT CHARSET=utf8');
     $stmt->execute();
 
     $stmt = $connection->prepare('CREATE TABLE `rating_info` (
