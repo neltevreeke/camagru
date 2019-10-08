@@ -3,7 +3,7 @@
     let likesCache = null;
 
     async function getUsername (id) {
-        return fetch('http://localhost:8100/api/user/get_user.php', {
+        return await fetch('http://localhost:8100/api/user/get_user.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -104,7 +104,8 @@
             const { id } = photo;
             const { userid } = photo;
             const { likes } = photo;
-            
+            const { comment_info } = photo;
+
             const mainItem = document.createElement('div');
             mainItem.setAttribute('class', 'main-item');
 
@@ -159,6 +160,44 @@
 
             mainItem.appendChild(pictureContainer);
 
+                        
+            if (comment_info) {
+                let commentArr = comment_info.split('|');
+
+                commentArr.forEach(comment => {
+                    let tmp = null;
+                    tmp = comment.split(':');
+                    
+                    commentObj = {
+                        user_id: tmp[0],
+                        comment: tmp[1]
+                    }
+
+                    const itemCommentWrap = document.createElement('div');
+                    itemCommentWrap.setAttribute('class', 'item-comment');
+
+                    const itemCommentUsername = document.createElement('p');
+                    itemCommentUsername.setAttribute('class', 'username-comment');
+
+                    itemCommentWrap.appendChild(itemCommentUsername);
+
+                    getUsername(commentObj.user_id)
+                        .then(res => {
+                            itemCommentUsername.innerHTML = res.username;
+                        });
+
+                    const itemCommentContent = document.createElement('p');
+                    itemCommentContent.setAttribute('class', 'comment-content');
+                    
+                    itemCommentContent.innerHTML = commentObj.comment;
+
+                    itemCommentWrap.appendChild(itemCommentContent);
+
+
+                    mainItem.appendChild(itemCommentWrap);
+                });
+            }
+
             // <div class = "item-comment">
             //     <p class = "username-comment">Klaasjan Petersen</p>
             //     <p class = "comment-content">Super mooi wauw</p>
@@ -188,9 +227,6 @@
             
             itemCommentSection.setAttribute('class', 'item-place-comment');
             mainItem.appendChild(itemCommentSection);
-
-//
-
         });
     }
 
@@ -198,7 +234,7 @@
         const res = await fetch('http://localhost:8100/api/photo/get_all_photos.php')
             .then(res => res.json());
 
-            console.log(res);
+        console.log(res.photos);
         renderPhotos(res.photos);
     }
 
