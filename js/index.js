@@ -1,6 +1,7 @@
 (function () {
     const elPhotosContainer = document.getElementById('photos');
     let likesCache = null;
+    let commentCache = null;
 
     async function getUsername (id) {
         return await fetch('http://localhost:8100/api/user/get_user.php', {
@@ -46,23 +47,34 @@
                 console.log('error');
             }
 
-            commentInputField.innerHTML = "";
+            commentInputField.value = "";
         }
     }
 
-    const handleCommentButtonClick = photo => async () => {
+    const emptyInputField = (commentValue, id) => {
+        const itemCommentButton = document.getElementById('comment-input-button-' + id);
+
+        itemCommentButton.style.backgroundColor = 'red';
+        commentValue = "";
+    }
+
+    const handleCommentButtonClick = (photo, mainItem) => async () => {
         const { id } = photo;
+        let { comment_info } = photo;
+
+
+        // console.log(mainItem.dataset.indexNumber);
 
         const commentInputField = document.getElementById('item-comment-input-' + id);
-        const commentValue = commentInputField.value;
+        let commentValue = commentInputField.value;
 
         if (!commentValue) {
-            // show error // input border color becomes red
+            emptyInputField(commentValue, id);
             return;
         }
 
         if (commentValue.length > 20) {
-            // show error // input text color becomes red
+            emptyInputField(commentValue, id);
             return;
         }
 
@@ -72,6 +84,13 @@
             action: 'comment',
             comment: commentValue
         });
+
+        let newComment = window.user.id + ":" + commentValue;
+        comment_info = comment_info + "|" + newComment;
+        commentCache[id - 1].comment_info = comment_info;
+
+        renderComments(newComment, mainItem);
+        commentValue = "";
     }
 
     const handlePhotoLike = photo => async () => {
@@ -82,7 +101,6 @@
             return;
         }
 
-        // check if liked photo is already liked if so, action = 'unlike';
         const res = await checkLike({
             userid: window.user.id,
             photoid: id,
@@ -99,6 +117,40 @@
         });
     }
 
+    const renderComments = (comment, mainItem) => {
+        const itemPlaceCommentWrap = document.getElementById('item-place-comment-' + mainItem.dataset.indexNumber);
+
+        let tmp = null;
+        tmp = comment.split(':');
+        
+        commentObj = {
+            user_id: tmp[0],
+            comment: tmp[1]
+        }
+
+        const itemCommentWrap = document.createElement('div');
+        itemCommentWrap.setAttribute('class', 'item-comment');
+
+        const itemCommentUsername = document.createElement('p');
+        itemCommentUsername.setAttribute('class', 'username-comment');
+
+        itemCommentWrap.appendChild(itemCommentUsername);
+
+        getUsername(commentObj.user_id)
+            .then(res => {
+                itemCommentUsername.innerHTML = res.username;
+            });
+
+        const itemCommentContent = document.createElement('p');
+        itemCommentContent.setAttribute('class', 'comment-content');
+        
+        itemCommentContent.innerHTML = commentObj.comment;
+
+        itemCommentWrap.appendChild(itemCommentContent);
+
+        mainItem.insertBefore(itemCommentWrap, itemPlaceCommentWrap);
+    }
+
     const renderPhotos = (photos) => {
         photos.forEach(photo => {
             const { id } = photo;
@@ -108,6 +160,7 @@
 
             const mainItem = document.createElement('div');
             mainItem.setAttribute('class', 'main-item');
+            mainItem.setAttribute('data-index-number', id);
 
             elPhotosContainer.appendChild(mainItem);
 
@@ -165,43 +218,9 @@
                 let commentArr = comment_info.split('|');
 
                 commentArr.forEach(comment => {
-                    let tmp = null;
-                    tmp = comment.split(':');
-                    
-                    commentObj = {
-                        user_id: tmp[0],
-                        comment: tmp[1]
-                    }
-
-                    const itemCommentWrap = document.createElement('div');
-                    itemCommentWrap.setAttribute('class', 'item-comment');
-
-                    const itemCommentUsername = document.createElement('p');
-                    itemCommentUsername.setAttribute('class', 'username-comment');
-
-                    itemCommentWrap.appendChild(itemCommentUsername);
-
-                    getUsername(commentObj.user_id)
-                        .then(res => {
-                            itemCommentUsername.innerHTML = res.username;
-                        });
-
-                    const itemCommentContent = document.createElement('p');
-                    itemCommentContent.setAttribute('class', 'comment-content');
-                    
-                    itemCommentContent.innerHTML = commentObj.comment;
-
-                    itemCommentWrap.appendChild(itemCommentContent);
-
-
-                    mainItem.appendChild(itemCommentWrap);
+                    renderComments(comment, mainItem);
                 });
             }
-
-            // <div class = "item-comment">
-            //     <p class = "username-comment">Klaasjan Petersen</p>
-            //     <p class = "comment-content">Super mooi wauw</p>
-            // </div>
 
             const itemCommentSection = document.createElement('div');
             if (window.user) {
@@ -215,7 +234,7 @@
                 const itemCommentButton = document.createElement('button');
                 itemCommentButton.setAttribute('id', 'comment-input-button-' + id);
                 itemCommentButton.setAttribute('class', 'comment-input-button');
-                itemCommentButton.addEventListener('click', handleCommentButtonClick(photo));
+                itemCommentButton.addEventListener('click', handleCommentButtonClick(photo, mainItem));
                 
                 const itemCommentButtonSpan = document.createElement('span');
                 itemCommentButtonSpan.setAttribute('class', 'fa fa-edit');
@@ -226,6 +245,7 @@
             }
             
             itemCommentSection.setAttribute('class', 'item-place-comment');
+            itemCommentSection.setAttribute('id', 'item-place-comment-' + id);
             mainItem.appendChild(itemCommentSection);
         });
     }
@@ -233,8 +253,9 @@
     async function init () {
         const res = await fetch('http://localhost:8100/api/photo/get_all_photos.php')
             .then(res => res.json());
+        
+        commentCache = res.photos;
 
-        console.log(res.photos);
         renderPhotos(res.photos);
     }
 

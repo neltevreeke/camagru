@@ -168,6 +168,7 @@ button:hover {
 .main-item {
     border-radius: 5px;
     border: 1px solid black;
+    position: relative;
 }
 
 .item-username {
@@ -220,6 +221,12 @@ button:hover {
 
 .comment-content {
     width: auto;
+}
+
+.item-place-comment {
+    width: 100%;
+    /* position: absolute; */
+    /* bottom: 0; */
 }
 
 .item-place-comment input {
