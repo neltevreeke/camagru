@@ -85,14 +85,12 @@
         });
         
         let singlePhotoComments = commentCache[comment.photoId - 1].comment_info.split('|');
-        console.log(`Deleting commment ${deletedComment}, ${commentCache[comment.photoId - 1].comment_info} becomes ${removeComment(commentCache[comment.photoId - 1].comment_info, deletedComment)}`);
-        console.log(singlePhotoComments, commentCache);
-        // singlePhotoComments = singlePhotoComments.filter(c => c !== deletedComment);
+        
         allItemCommentsWrap.innerHTML = "";
 
         singlePhotoComments.forEach(comment => {
-            console.log(comment);
             let tmpComment = renderComments(comment, mainItem);
+
             allItemCommentsWrap.appendChild(tmpComment);
         });
     }
@@ -101,6 +99,7 @@
         const { id } = photo;
 
         const commentInputField = document.getElementById('item-comment-input-' + id);
+        const commentInputWrap = document.getElementById('item-place-comment-' + id);
         let commentValue = commentInputField.value;
 
         if (!commentValue) {
@@ -120,20 +119,25 @@
             comment: commentValue
         });
 
+        let allItemCommentsWrap = document.getElementById('all-item-comments-' + id);
+
+        if (!allItemCommentsWrap) {
+            allItemCommentsWrap = document.createElement('div');
+            allItemCommentsWrap.setAttribute('id', 'all-item-comments-' + id);
+        }
+
         let newComment = window.user.id + ":" + commentValue;
 
         commentCache = commentCache.map((photo, idx) => {
             if (idx == id - 1) {
-                console.log('Got here');
                 return {...photo, comment_info: photo.comment_info + "|" + newComment };
             } else {
                 return photo;
             }
         });
-        console.log("Updated", commentCache);
 
-        const allItemCommentsWrap = document.getElementById('all-item-comments-' + id);
         allItemCommentsWrap.appendChild(renderComments(newComment, mainItem));
+        mainItem.insertBefore(allItemCommentsWrap, commentInputWrap);
         commentValue = "";
     }
 
@@ -162,6 +166,7 @@
     }
 
     const renderComments = (comment, mainItem) => {
+        
         let tmp = null;
         tmp = comment.split(':');
         
@@ -179,6 +184,10 @@
         
         itemCommentWrap.appendChild(itemCommentUsername);
         
+        if (!comment) {
+            return;
+        }
+
         getUsername(commentObj.user_id)
         .then(res => {
             itemCommentUsername.innerHTML = res.username;
@@ -191,12 +200,14 @@
         
         itemCommentWrap.appendChild(itemCommentContent);
         
-        if (commentObj.user_id === window.user.id) {
-            const itemCommentDeleteButton = document.createElement('span');
-            itemCommentDeleteButton.setAttribute('class', 'fa fa-trash');
-            itemCommentDeleteButton.addEventListener('click', handleDeleteCommentClick(commentObj));
-
-            itemCommentWrap.appendChild(itemCommentDeleteButton);
+        if (window.user) {
+            if (commentObj.user_id === window.user.id) {
+                const itemCommentDeleteButton = document.createElement('span');
+                itemCommentDeleteButton.setAttribute('class', 'fa fa-trash');
+                itemCommentDeleteButton.addEventListener('click', handleDeleteCommentClick(commentObj));
+    
+                itemCommentWrap.appendChild(itemCommentDeleteButton);
+            }
         }
 
         return itemCommentWrap;
@@ -315,7 +326,7 @@
         commentCache = res.photos;
 
         // comment info omzetten naar array / object
-
+        
         renderPhotos(res.photos);
     }
 
