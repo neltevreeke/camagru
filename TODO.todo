@@ -19,8 +19,8 @@ HOMEPAGE
 _______________________________________________________________________________________________________________________________________________
 
 - Sorting, new to last.
-- Able to delete comments.
-- window.user not always set before rendering page which is causing bugs.
+- Refactoring query return from string to object to work with
+- window.user not always set before rendering page which is causing a bug to not load anything.
 
 NOTES?
 
