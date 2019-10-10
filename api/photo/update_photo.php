@@ -37,6 +37,15 @@ if ($jsonDecode->action == "comment") {
     }
 }
 
+if ($jsonDecode->action == "uncomment") {
+
+    if ($photo->updatePhoto($jsonDecode)) {
+        echo json_encode(array("message" => "Success"));
+    } else {
+        echo json_encode(array("message" => "Failure"));
+    }
+}
+
 if ($jsonDecode->action == "like" || $jsonDecode->action == "unlike") {
     $totalLikes = $photo->updatePhoto($jsonDecode);
 

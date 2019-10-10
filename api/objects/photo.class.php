@@ -128,6 +128,16 @@ class Photo {
                 $stmt->execute(array($updatedFields->photoid, $updatedFields->userid, $comment));
 
                 return true;
+            case 'uncomment':
+                $query = "DELETE FROM comments 
+                        WHERE user_id=? 
+                        AND photo_id=? 
+                        AND comment=?";
+                $stmt = $this->conn->prepare($query);
+
+                $stmt->execute(array($updatedFields->userid, $updatedFields->photoid, $updatedFields->comment));
+
+                return true;
             default:
                 break;
         }

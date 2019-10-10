@@ -202,10 +202,24 @@ button:hover {
 }
 
 .item-comment {
-    width: 100%;
+    /* width: 100%; */
     height: auto;
     text-align: left;
     padding-left: 10px;
+}
+
+.item-comment .fa-trash {
+    position: absolute;
+    right: 0;
+    padding-right: 10px;
+    color: #000;
+    visibility: hidden;
+    cursor: pointer;
+    transform: translateY(5px);
+}
+
+.item-comment:hover .fa-trash {
+    visibility: visible;
 }
 
 .item-comment p {

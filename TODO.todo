@@ -20,7 +20,7 @@ ________________________________________________________________________________
 
 - Sorting, new to last.
 - Able to delete comments.
-- comment input section not always appearing ??
+- window.user not always set before rendering page which is causing bugs.
 
 NOTES?
 

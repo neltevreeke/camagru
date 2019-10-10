@@ -58,12 +58,47 @@
         commentValue = "";
     }
 
+    const handleDeleteCommentClick = comment => async () => {
+        const mainItem = event.target.parentNode.parentNode.parentNode;
+        const allItemCommentsWrap = document.getElementById('all-item-comments-' + comment.photoId);
+        const deletedComment = comment.user_id + ":" + comment.comment;
+
+        await submitForm({
+            userid: comment.user_id,
+            photoid: comment.photoId,
+            action: 'uncomment',
+            comment: comment.comment
+        });
+
+        
+        const removeComment = (allComments, deletedComment) => allComments
+        .split('|')
+        .filter(comment => comment != deletedComment)
+        .join('|');
+ 
+        commentCache = commentCache.map((photo, id) => {
+            if (id == comment.photoId - 1) {
+                return {...photo, comment_info: removeComment(photo.comment_info, deletedComment)};
+            } else {
+                return photo;
+            }
+        });
+        
+        let singlePhotoComments = commentCache[comment.photoId - 1].comment_info.split('|');
+        console.log(`Deleting commment ${deletedComment}, ${commentCache[comment.photoId - 1].comment_info} becomes ${removeComment(commentCache[comment.photoId - 1].comment_info, deletedComment)}`);
+        console.log(singlePhotoComments, commentCache);
+        // singlePhotoComments = singlePhotoComments.filter(c => c !== deletedComment);
+        allItemCommentsWrap.innerHTML = "";
+
+        singlePhotoComments.forEach(comment => {
+            console.log(comment);
+            let tmpComment = renderComments(comment, mainItem);
+            allItemCommentsWrap.appendChild(tmpComment);
+        });
+    }
+
     const handleCommentButtonClick = (photo, mainItem) => async () => {
         const { id } = photo;
-        let { comment_info } = photo;
-
-
-        // console.log(mainItem.dataset.indexNumber);
 
         const commentInputField = document.getElementById('item-comment-input-' + id);
         let commentValue = commentInputField.value;
@@ -86,10 +121,19 @@
         });
 
         let newComment = window.user.id + ":" + commentValue;
-        comment_info = comment_info + "|" + newComment;
-        commentCache[id - 1].comment_info = comment_info;
 
-        renderComments(newComment, mainItem);
+        commentCache = commentCache.map((photo, idx) => {
+            if (idx == id - 1) {
+                console.log('Got here');
+                return {...photo, comment_info: photo.comment_info + "|" + newComment };
+            } else {
+                return photo;
+            }
+        });
+        console.log("Updated", commentCache);
+
+        const allItemCommentsWrap = document.getElementById('all-item-comments-' + id);
+        allItemCommentsWrap.appendChild(renderComments(newComment, mainItem));
         commentValue = "";
     }
 
@@ -118,37 +162,44 @@
     }
 
     const renderComments = (comment, mainItem) => {
-        const itemPlaceCommentWrap = document.getElementById('item-place-comment-' + mainItem.dataset.indexNumber);
-
         let tmp = null;
         tmp = comment.split(':');
         
         commentObj = {
             user_id: tmp[0],
-            comment: tmp[1]
+            comment: tmp[1],
+            photoId: mainItem.dataset.indexNumber
         }
-
+        
         const itemCommentWrap = document.createElement('div');
         itemCommentWrap.setAttribute('class', 'item-comment');
-
+        
         const itemCommentUsername = document.createElement('p');
         itemCommentUsername.setAttribute('class', 'username-comment');
-
+        
         itemCommentWrap.appendChild(itemCommentUsername);
-
+        
         getUsername(commentObj.user_id)
-            .then(res => {
-                itemCommentUsername.innerHTML = res.username;
-            });
-
+        .then(res => {
+            itemCommentUsername.innerHTML = res.username;
+        });
+        
         const itemCommentContent = document.createElement('p');
         itemCommentContent.setAttribute('class', 'comment-content');
         
         itemCommentContent.innerHTML = commentObj.comment;
-
+        
         itemCommentWrap.appendChild(itemCommentContent);
+        
+        if (commentObj.user_id === window.user.id) {
+            const itemCommentDeleteButton = document.createElement('span');
+            itemCommentDeleteButton.setAttribute('class', 'fa fa-trash');
+            itemCommentDeleteButton.addEventListener('click', handleDeleteCommentClick(commentObj));
 
-        mainItem.insertBefore(itemCommentWrap, itemPlaceCommentWrap);
+            itemCommentWrap.appendChild(itemCommentDeleteButton);
+        }
+
+        return itemCommentWrap;
     }
 
     const renderPhotos = (photos) => {
@@ -216,10 +267,17 @@
                         
             if (comment_info) {
                 let commentArr = comment_info.split('|');
+                const allItemComments = document.createElement('div');
+
+                allItemComments.setAttribute('id', 'all-item-comments-' + id);
 
                 commentArr.forEach(comment => {
-                    renderComments(comment, mainItem);
+                    let tmpComment = renderComments(comment, mainItem);
+
+                    allItemComments.appendChild(tmpComment);
                 });
+
+                mainItem.appendChild(allItemComments);
             }
 
             const itemCommentSection = document.createElement('div');
@@ -255,6 +313,8 @@
             .then(res => res.json());
         
         commentCache = res.photos;
+
+        // comment info omzetten naar array / object
 
         renderPhotos(res.photos);
     }
