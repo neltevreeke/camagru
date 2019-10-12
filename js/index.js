@@ -51,64 +51,57 @@
         }
     }
 
-    const emptyInputField = (commentValue, id) => {
-        const itemCommentButton = document.getElementById('comment-input-button-' + id);
-
-        itemCommentButton.style.backgroundColor = 'red';
+    const emptyInputField = (commentValue) => {
         commentValue = "";
     }
 
-    const handleDeleteCommentClick = comment => async () => {
-        const mainItem = event.target.parentNode.parentNode.parentNode;
-        const allItemCommentsWrap = document.getElementById('all-item-comments-' + comment.photoId);
-        const deletedComment = comment.user_id + ":" + comment.comment;
+    const commentInputError = (id) => {
+        const itemCommentButton = document.getElementById('comment-input-button-' + id);
 
-        await submitForm({
-            userid: comment.user_id,
-            photoid: comment.photoId,
-            action: 'uncomment',
-            comment: comment.comment
-        });
+        itemCommentButton.style.backgroundColor = 'red';
+    }
 
-        
-        const removeComment = (allComments, deletedComment) => allComments
-        .split('|')
-        .filter(comment => comment != deletedComment)
-        .join('|');
- 
-        commentCache = commentCache.map((photo, id) => {
-            if (id == comment.photoId - 1) {
-                return {...photo, comment_info: removeComment(photo.comment_info, deletedComment)};
+    const updateCommentCache = (commentValue, photo, id) => {
+        console.log(photo);
+        commentCache = commentCache.map((photo, idx) => {
+            if (idx === id - 1) {
+                return {
+                    ...photo,
+                    comment_info: 
+                        photo.comment_info.push({
+                            userId: window.user.id,
+                            value: commentValue
+                        }) 
+                }
             } else {
                 return photo;
             }
         });
-        
-        let singlePhotoComments = commentCache[comment.photoId - 1].comment_info.split('|');
-        
-        allItemCommentsWrap.innerHTML = "";
-
-        singlePhotoComments.forEach(comment => {
-            let tmpComment = renderComments(comment, mainItem);
-
-            allItemCommentsWrap.appendChild(tmpComment);
-        });
     }
 
-    const handleCommentButtonClick = (photo, mainItem) => async () => {
-        const { id } = photo;
-
-        const commentInputField = document.getElementById('item-comment-input-' + id);
-        const commentInputWrap = document.getElementById('item-place-comment-' + id);
-        let commentValue = commentInputField.value;
-
+    const validateCommentInput = (commentValue, id) => {
         if (!commentValue) {
-            emptyInputField(commentValue, id);
-            return;
+            emptyInputField(commentValue);
+            commentInputError(id);
+            return false;
         }
 
         if (commentValue.length > 20) {
-            emptyInputField(commentValue, id);
+            emptyInputField(commentValue);
+            commentInputError(id);
+            return false;
+        }
+    }
+
+    const handleCommentButtonClick = (photo) => async () => {
+        const { id } = photo;
+
+        const commentInputField = document.getElementById('item-comment-input-' + id);
+        let commentValue = commentInputField.value;
+
+        const allCommentsWrap = document.getElementById('all-item-comments-' + id);
+
+        if (!validateCommentInput(commentValue, id)) {
             return;
         }
 
@@ -119,26 +112,17 @@
             comment: commentValue
         });
 
-        let allItemCommentsWrap = document.getElementById('all-item-comments-' + id);
+        // get newCommentID, nodig ivm deleteComment?
+        // const res = window.fetchAPI('photo/')
 
-        if (!allItemCommentsWrap) {
-            allItemCommentsWrap = document.createElement('div');
-            allItemCommentsWrap.setAttribute('id', 'all-item-comments-' + id);
-        }
+        updateCommentCache(commentValue, photo, id);
 
-        let newComment = window.user.id + ":" + commentValue;
-
-        commentCache = commentCache.map((photo, idx) => {
-            if (idx == id - 1) {
-                return {...photo, comment_info: photo.comment_info + "|" + newComment };
-            } else {
-                return photo;
-            }
+        const newCommentDiv = renderComments({
+            userId: window.user.id,
+            value: commentValue
         });
 
-        allItemCommentsWrap.appendChild(renderComments(newComment, mainItem));
-        mainItem.insertBefore(allItemCommentsWrap, commentInputWrap);
-        commentValue = "";
+        allCommentsWrap.appendChild(newCommentDiv);
     }
 
     const handlePhotoLike = photo => async () => {
@@ -165,52 +149,35 @@
         });
     }
 
-    const renderComments = (comment, mainItem) => {
-        
-        let tmp = null;
-        tmp = comment.split(':');
-        
-        commentObj = {
-            user_id: tmp[0],
-            comment: tmp[1],
-            photoId: mainItem.dataset.indexNumber
-        }
-        
-        const itemCommentWrap = document.createElement('div');
-        itemCommentWrap.setAttribute('class', 'item-comment');
-        
+    const renderComments = (comment) => {
+        const itemComment = document.createElement('div');
         const itemCommentUsername = document.createElement('p');
-        itemCommentUsername.setAttribute('class', 'username-comment');
-        
-        itemCommentWrap.appendChild(itemCommentUsername);
-        
-        if (!comment) {
-            return;
-        }
 
-        getUsername(commentObj.user_id)
+        itemCommentUsername.setAttribute('class', 'username-comment');
+        itemComment.setAttribute('class', 'item-comment');
+        itemComment.appendChild(itemCommentUsername);
+
+        getUsername(comment.userId)
         .then(res => {
             itemCommentUsername.innerHTML = res.username;
         });
-        
+
         const itemCommentContent = document.createElement('p');
         itemCommentContent.setAttribute('class', 'comment-content');
-        
-        itemCommentContent.innerHTML = commentObj.comment;
-        
-        itemCommentWrap.appendChild(itemCommentContent);
-        
+        itemCommentContent.innerHTML = comment.value;
+        itemComment.appendChild(itemCommentContent);
+
         if (window.user) {
-            if (commentObj.user_id === window.user.id) {
+            if (comment.userId === window.user.id) {
                 const itemCommentDeleteButton = document.createElement('span');
                 itemCommentDeleteButton.setAttribute('class', 'fa fa-trash');
-                itemCommentDeleteButton.addEventListener('click', handleDeleteCommentClick(commentObj));
+                // itemCommentDeleteButton.addEventListener('click', handleDeleteCommentClick(commentObj));
     
-                itemCommentWrap.appendChild(itemCommentDeleteButton);
+                itemComment.appendChild(itemCommentDeleteButton);
             }
         }
 
-        return itemCommentWrap;
+        return itemComment;
     }
 
     const renderPhotos = (photos) => {
@@ -277,15 +244,13 @@
 
                         
             if (comment_info) {
-                let commentArr = comment_info.split('|');
                 const allItemComments = document.createElement('div');
-
                 allItemComments.setAttribute('id', 'all-item-comments-' + id);
 
-                commentArr.forEach(comment => {
-                    let tmpComment = renderComments(comment, mainItem);
+                comment_info.forEach(comment => {
+                    let itemComment = renderComments(comment, mainItem);
 
-                    allItemComments.appendChild(tmpComment);
+                    allItemComments.appendChild(itemComment);
                 });
 
                 mainItem.appendChild(allItemComments);
@@ -319,14 +284,38 @@
         });
     }
 
+    const convertCommentToObj = (comment) => {
+        let commentObj = comment.split('|');
+        
+        commentObj = commentObj.map((comment) => {
+            comment = comment.split(':');
+            return {
+                id: comment[0],
+                userId: comment[1],
+                value: comment[2]
+            }
+        })
+
+        return commentObj;
+    }
+
     async function init () {
         const res = await fetch('http://localhost:8100/api/photo/get_all_photos.php')
             .then(res => res.json());
-        
+
+        res.photos = res.photos.map((photo) => {
+            if (photo.comment_info) {
+                return {
+                    ...photo,
+                    comment_info: convertCommentToObj(photo.comment_info)
+                }
+            } else {
+                return photo;
+            }
+        });
+
         commentCache = res.photos;
 
-        // comment info omzetten naar array / object
-        
         renderPhotos(res.photos);
     }
 

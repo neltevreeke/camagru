@@ -19,8 +19,9 @@ HOMEPAGE
 _______________________________________________________________________________________________________________________________________________
 
 - Sorting, new to last.
-- Refactoring query return from string to object to work with
 - window.user not always set before rendering page which is causing a bug to not load anything.
+- Get newCommentId to store with newComment in commentCache.
+- Delete Comment.
 
 NOTES?
 

@@ -28,18 +28,10 @@ class Photo {
     }
 
     public function getAllPhotos() {
-        // $query = "SELECT photos.id, photos.userid, l.likes
-        //         FROM photos
-        //         LEFT OUTER JOIN (
-        //             SELECT photo_id, COUNT(*) as likes
-        //             FROM rating_info
-        //             GROUP BY photo_id
-        //         ) l ON l.photo_id = photos.id";
-
         $query = "SELECT photos.id, photos.userid, c.comment_info, l.likes
                 FROM photos 
                 LEFT OUTER JOIN ( 
-                    SELECT `photo_id`, GROUP_CONCAT(`user_id`, ':', `comment` SEPARATOR '|') as comment_info
+                    SELECT `photo_id`, GROUP_CONCAT(`id`, ':', `user_id`, ':', `comment` SEPARATOR '|') as comment_info
                     FROM comments
                     GROUP BY photo_id
                 ) c ON c.photo_id = photos.id

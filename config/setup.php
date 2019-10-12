@@ -50,6 +50,7 @@
 
     // Create table comments
     $stmt = $connection->prepare('CREATE TABLE `comments` (
+                                `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
                                 `user_id` int(11) NOT NULL,
                                 `photo_id` int(11) NOT NULL,
                                 `comment` varchar(30) NOT NULL
