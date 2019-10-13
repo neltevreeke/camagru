@@ -29,9 +29,10 @@ if (!isset($jsonDecode->action)) {
 }
 
 if ($jsonDecode->action == "comment") {
+    $lastId = $photo->updatePhoto($jsonDecode);
     
-    if ($photo->updatePhoto($jsonDecode)) {
-        echo json_encode(array("message" => "Success"));
+    if ($lastId) {
+        echo json_encode(array("message" => "Success", "newCommentId" => $lastId));
     } else {
         echo json_encode(array("message" => "Failure"));
     }

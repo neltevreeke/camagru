@@ -29,8 +29,8 @@ class Photo {
 
     public function getAllPhotos() {
         $query = "SELECT photos.id, photos.userid, c.comment_info, l.likes
-                FROM photos 
-                LEFT OUTER JOIN ( 
+                FROM photos
+                LEFT OUTER JOIN (
                     SELECT `photo_id`, GROUP_CONCAT(`id`, ':', `user_id`, ':', `comment` SEPARATOR '|') as comment_info
                     FROM comments
                     GROUP BY photo_id
@@ -119,17 +119,20 @@ class Photo {
                 
                 $stmt->execute(array($updatedFields->photoid, $updatedFields->userid, $comment));
 
-                return true;
+                $id = $this->conn->lastInsertId();
+
+                return $id;
             case 'uncomment':
                 $query = "DELETE FROM comments 
-                        WHERE user_id=? 
-                        AND photo_id=? 
-                        AND comment=?";
+                        WHERE id=?";
                 $stmt = $this->conn->prepare($query);
 
-                $stmt->execute(array($updatedFields->userid, $updatedFields->photoid, $updatedFields->comment));
+                if ($stmt->execute(array($updatedFields->id))) {
+                    return true;
+                } else {
+                    return false;
+                }
 
-                return true;
             default:
                 break;
         }

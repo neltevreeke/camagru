@@ -48,6 +48,18 @@
             }
 
             commentInputField.value = "";
+
+            return res.newCommentId;
+        }
+
+        if (updatedFields.action === 'uncomment') {
+            if (res.message !== 'Success') {
+                console.log('error');
+            }
+
+            // update commentCache
+            // empty comment Div
+            // print out commentCache
         }
     }
 
@@ -61,22 +73,30 @@
         itemCommentButton.style.backgroundColor = 'red';
     }
 
-    const updateCommentCache = (commentValue, photo, id) => {
-        console.log(photo);
-        commentCache = commentCache.map((photo, idx) => {
-            if (idx === id - 1) {
-                return {
-                    ...photo,
-                    comment_info: 
-                        photo.comment_info.push({
-                            userId: window.user.id,
-                            value: commentValue
-                        }) 
+    const updateCommentCache = (updatedFields, id) => {
+        if (updatedFields.action === 'comment') {
+            commentCache.map((photo, idx) => {
+                if (idx === id - 1) {
+                    photo.comment_info.push({
+                        id: updatedFields.id,
+                        userId: window.user.id,
+                        value: updatedFields.value
+                    });
+                } else {
+                    return photo;
                 }
-            } else {
-                return photo;
-            }
-        });
+            });
+        }
+
+        console.log(updatedFields);
+
+        // if (updatedFields.action === 'uncomment') {
+        //     commentCache.mmap((photo, idx) => {
+        //         if (idx === id - 1) {
+        //             photo.comment_info.filter(comment => updatedFields.id != deletedComment)
+        //         }
+        //     })
+        // }
     }
 
     const validateCommentInput = (commentValue, id) => {
@@ -91,6 +111,19 @@
             commentInputError(id);
             return false;
         }
+
+        return true;
+    }
+
+    const handleDeleteCommentClick = (comment) => async () =>{
+        const photoId = event.target.parentNode.parentNode.parentNode.dataset.indexNumber;
+
+        await submitForm({
+            id: comment.id,
+            userid: comment.userId,
+            value: comment.value,
+            action: 'uncomment'
+        });
     }
 
     const handleCommentButtonClick = (photo) => async () => {
@@ -105,19 +138,21 @@
             return;
         }
 
-        await submitForm({
+        const newCommentId = await submitForm({
             userid: window.user.id,
             photoid: id,
             action: 'comment',
             comment: commentValue
         });
 
-        // get newCommentID, nodig ivm deleteComment?
-        // const res = window.fetchAPI('photo/')
+        updateCommentCache({
+            id: newCommentId, 
+            value: commentValue,
+            action: 'comment'
+        }, id);
 
-        updateCommentCache(commentValue, photo, id);
-
-        const newCommentDiv = renderComments({
+        const newCommentDiv = getComment({
+            id: newCommentId,
             userId: window.user.id,
             value: commentValue
         });
@@ -149,7 +184,7 @@
         });
     }
 
-    const renderComments = (comment) => {
+    const getComment = (comment) => {
         const itemComment = document.createElement('div');
         const itemCommentUsername = document.createElement('p');
 
@@ -171,7 +206,7 @@
             if (comment.userId === window.user.id) {
                 const itemCommentDeleteButton = document.createElement('span');
                 itemCommentDeleteButton.setAttribute('class', 'fa fa-trash');
-                // itemCommentDeleteButton.addEventListener('click', handleDeleteCommentClick(commentObj));
+                itemCommentDeleteButton.addEventListener('click', handleDeleteCommentClick(comment));
     
                 itemComment.appendChild(itemCommentDeleteButton);
             }
@@ -248,7 +283,7 @@
                 allItemComments.setAttribute('id', 'all-item-comments-' + id);
 
                 comment_info.forEach(comment => {
-                    let itemComment = renderComments(comment, mainItem);
+                    let itemComment = getComment(comment, mainItem);
 
                     allItemComments.appendChild(itemComment);
                 });
@@ -268,7 +303,8 @@
                 const itemCommentButton = document.createElement('button');
                 itemCommentButton.setAttribute('id', 'comment-input-button-' + id);
                 itemCommentButton.setAttribute('class', 'comment-input-button');
-                itemCommentButton.addEventListener('click', handleCommentButtonClick(photo, mainItem));
+                
+                itemCommentButton.addEventListener('click', handleCommentButtonClick(photo));
                 
                 const itemCommentButtonSpan = document.createElement('span');
                 itemCommentButtonSpan.setAttribute('class', 'fa fa-edit');
@@ -286,7 +322,7 @@
 
     const convertCommentToObj = (comment) => {
         let commentObj = comment.split('|');
-        
+
         commentObj = commentObj.map((comment) => {
             comment = comment.split(':');
             return {
@@ -303,6 +339,7 @@
         const res = await fetch('http://localhost:8100/api/photo/get_all_photos.php')
             .then(res => res.json());
 
+            
         res.photos = res.photos.map((photo) => {
             if (photo.comment_info) {
                 return {
@@ -310,10 +347,14 @@
                     comment_info: convertCommentToObj(photo.comment_info)
                 }
             } else {
-                return photo;
+                return {
+                    ...photo,
+                    comment_info: []
+                };
             }
         });
-
+        
+        console.log(res.photos);
         commentCache = res.photos;
 
         renderPhotos(res.photos);
