@@ -43,12 +43,10 @@
 
         if (updatedFields.action === 'uncomment') {
             if (res.message !== 'Success') {
-                console.log('error');
+                return false;
             }
 
-            // update commentCache
-            // empty comment Div
-            // print out commentCache
+            return true;
         }
     }
 
@@ -63,6 +61,7 @@
     }
 
     const updateCommentCache = (updatedFields, id) => {
+
         if (updatedFields.action === 'comment') {
             commentCache.map((photo, idx) => {
                 if (idx === id - 1) {
@@ -77,15 +76,20 @@
             });
         }
 
-        console.log(updatedFields);
+        if (updatedFields.action === 'uncomment') {
+            commentCache.map((photo, idx) => {
+                if (idx === id - 1) {
+                    photo.comments.map((comment, idx) => {
+                        if (updatedFields.id === comment.id) {
+                            photo.comments = photo.comments.filter(c => c.id !== updatedFields.id);
+                        } else {
+                            return photo;
+                        }
 
-        // if (updatedFields.action === 'uncomment') {
-        //     commentCache.mmap((photo, idx) => {
-        //         if (idx === id - 1) {
-        //             photo.comment_info.filter(comment => updatedFields.id != deletedComment)
-        //         }
-        //     })
-        // }
+                    })
+                }
+            })
+        }
     }
 
     const validateCommentInput = (commentValue, id) => {
@@ -106,15 +110,32 @@
 
     const handleDeleteCommentClick = (comment) => async () =>{
         const photoId = event.target.parentNode.parentNode.parentNode.dataset.indexNumber;
+        const allItemCommentsWrap = document.getElementById('all-item-comments-' + photoId);
 
-        console.log(comment);
-
-        await submitForm({
+        const res = await submitForm({
             id: comment.id,
-            userid: comment.userId,
-            value: comment.value,
+            username: comment.username,
+            value: comment.comment,
             action: 'uncomment'
         });
+
+        if (!res) {
+            return ;
+        }
+
+        updateCommentCache({
+            id: comment.id,
+            username: window.user.username,
+            value: comment.comment,
+            action: 'uncomment'
+        }, photoId);
+
+        allItemCommentsWrap.innerHTML = "";
+        commentCache[photoId - 1].comments.forEach(comment => {
+            let tmpComment = getCommentElem(comment);
+
+            allItemCommentsWrap.appendChild(tmpComment);
+        })
     }
 
     const handleCommentButtonClick = (photo) => async () => {
