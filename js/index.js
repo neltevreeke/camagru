@@ -33,7 +33,7 @@
 
         if (updatedFields.action === 'comment') {
             if (res.message !== 'Success') {
-                console.log('error');
+                return null;
             }
 
             commentInputField.value = "";
@@ -64,7 +64,7 @@
 
         if (updatedFields.action === 'comment') {
             commentCache.map((photo, idx) => {
-                if (idx === id - 1) {
+                if (commentCache[idx].id === id) { // hier komt ie noooit in (dus update werkt niet goed)
                     photo.comments.push({
                         id: updatedFields.id,
                         comment: updatedFields.value,
@@ -78,7 +78,7 @@
 
         if (updatedFields.action === 'uncomment') {
             commentCache.map((photo, idx) => {
-                if (idx === id - 1) {
+                if (commentCache[idx].id === id) {
                     photo.comments.map((comment, idx) => {
                         if (updatedFields.id === comment.id) {
                             photo.comments = photo.comments.filter(c => c.id !== updatedFields.id);
@@ -130,11 +130,21 @@
             action: 'uncomment'
         }, photoId);
 
-        allItemCommentsWrap.innerHTML = "";
-        commentCache[photoId - 1].comments.forEach(comment => {
-            let tmpComment = getCommentElem(comment);
+        commentCache.map((photo, idx) => {
+            if (commentCache[idx].id === photoId) {
+                if (!commentCache[idx].comments) {
+                    return;
+                }
 
-            allItemCommentsWrap.appendChild(tmpComment);
+                allItemCommentsWrap.innerHTML = "";
+
+                commentCache[idx].comments.forEach(comment => {
+                    let tmpComment = getCommentElem(comment);
+                    allItemCommentsWrap.appendChild(tmpComment);
+                })
+            } else {
+                return photo;
+            }
         })
     }
 
@@ -227,6 +237,10 @@
     }
 
     const renderPhotos = (photos) => {
+        if (!photos) {
+            return null;
+        }
+
         photos.forEach(photo => {
             const { id } = photo;
             const { comments } = photo;

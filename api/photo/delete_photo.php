@@ -15,7 +15,14 @@ $query = "DELETE FROM photos
 $stmt = $db->prepare($query);
 
 if ($stmt->execute(array($photoId))){
-    echo json_encode(array("message" => "Success"));
+    $query = "DELETE FROM comments WHERE photo_id = ?";
+    $stmt = $db->prepare($query);
+
+    if ($stmt->execute(array($photoId))) {
+        echo json_encode(array("message" => "Success"));
+    } else {
+        echo json_encode(array("message" => "Failed"));
+    }
 } else {
     echo json_encode(array("message" => "Failed"));
 }

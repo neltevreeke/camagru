@@ -26,7 +26,7 @@
         messageDiv.setAttribute('class', 'photos');
     
         messageDiv.innerHTML = message;
-        elPhotos.insertBefore(messageDiv, userSidebar);
+        elPhotos.appendChild(messageDiv);
     }
 
     const renderPhotos = (photos) => {
@@ -188,7 +188,7 @@
         const res = await window.fetchAPI('photo/get_photo.php');
         
         if (res && res.message === "No photos found") {
-            renderMessage(photos.message);
+            renderMessage(res.message);
             return null;
         }
 
