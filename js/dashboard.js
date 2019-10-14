@@ -192,6 +192,8 @@
             return null;
         }
 
+        res.photos.reverse();
+
         photosCache = res.photos;
 
         renderPhotos(res.photos);

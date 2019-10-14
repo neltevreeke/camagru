@@ -345,6 +345,8 @@
         const res = await fetch('http://localhost:8100/api/photo/get_all_photos.php')
             .then(res => res.json());
 
+        res.photos.reverse();
+
         commentCache = res.photos;
 
         renderPhotos(res.photos);
