@@ -27,29 +27,48 @@ class Photo {
         }
     }
 
+    public function getComments($photoId) {
+        $query = "SELECT c.id, c.comment, u.username
+                FROM comments c
+                JOIN users u ON c.user_id = u.id
+                WHERE c.photo_id = ?";
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->execute(array((int)$photoId));
+
+        if ($stmt->rowCount() > 0) {
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            return [];
+        }
+    }
+
     public function getAllPhotos() {
-        $query = "SELECT photos.id, photos.userid, c.comment_info, l.likes
+        $query = "SELECT photos.id, photos.userid, l.likes, u.username
                 FROM photos
-                LEFT OUTER JOIN (
-                    SELECT `photo_id`, GROUP_CONCAT(`id`, ':', `user_id`, ':', `comment` SEPARATOR '|') as comment_info
-                    FROM comments
-                    GROUP BY photo_id
-                ) c ON c.photo_id = photos.id
                 LEFT OUTER JOIN (
                     SELECT photo_id, COUNT(*) as likes
                     FROM rating_info
                     GROUP BY photo_id
-                ) l ON l.photo_id = photos.id";
+                ) l ON l.photo_id = photos.id
+                JOIN users u ON photos.userid = u.id";
 
         $stmt = $this->conn->prepare($query);
 
         $stmt->execute();
 
-        if ($stmt->rowCount() > 0) {
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } else {
+        if ($stmt->rowCount() < 0) {
             return false;
         }
+
+        $photos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($photos as &$photo) {
+            $comments = $this->getComments($photo['id']);
+            $photo['comments'] = $comments;
+        }
+
+        return $photos;
     }
 
     public function uploadPhoto($mimeType, $watermark) {

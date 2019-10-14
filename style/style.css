@@ -1,13 +1,3 @@
-/* $primaryColor: #E27D60 */
-/* $primaryHover: #E8A87C */
-
-/* $secondaryColor: #41B3A3 */
-/* $secondayHover: rgb(127, 209, 198) */
-
-/* $font: sans-serif */
-/* $pFontSize: 19px */
-
-
 /* HTML TAGS */ 
 
 body {
@@ -607,4 +597,16 @@ input[type="file"] {
 
 .edit-photo-container button {
     width: 30%;
+}
+
+@media (max-width: 768px) {
+    body {
+      background-color: blue!important;
+    }
+}
+
+@media (max-width: 320px) {
+    body {
+      background-color: red!important;
+    }
 }

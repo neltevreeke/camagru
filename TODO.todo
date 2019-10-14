@@ -19,9 +19,7 @@ HOMEPAGE
 _______________________________________________________________________________________________________________________________________________
 
 - Sorting, new to last.
-- window.user not always set before rendering page which is causing a bug to not load anything.
-- Get newCommentId to store with newComment in commentCache.
-- Delete Comment.
+- Comments
 
 NOTES?
 

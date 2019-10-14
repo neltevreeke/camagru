@@ -3,17 +3,6 @@
     let likesCache = null;
     let commentCache = null;
 
-    async function getUsername (id) {
-        return await fetch('http://localhost:8100/api/user/get_user.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(id)
-            })
-        .then(res => res.json());
-    }
-
     const checkLike = async (updatedFields) => {
         const res = await window.fetchAPI('photo/update_photo.php', {
             method: 'POST',
@@ -77,10 +66,10 @@
         if (updatedFields.action === 'comment') {
             commentCache.map((photo, idx) => {
                 if (idx === id - 1) {
-                    photo.comment_info.push({
+                    photo.comments.push({
                         id: updatedFields.id,
-                        userId: window.user.id,
-                        value: updatedFields.value
+                        comment: updatedFields.value,
+                        username: window.user.username
                     });
                 } else {
                     return photo;
@@ -118,6 +107,8 @@
     const handleDeleteCommentClick = (comment) => async () =>{
         const photoId = event.target.parentNode.parentNode.parentNode.dataset.indexNumber;
 
+        console.log(comment);
+
         await submitForm({
             id: comment.id,
             userid: comment.userId,
@@ -146,15 +137,15 @@
         });
 
         updateCommentCache({
-            id: newCommentId, 
+            id: newCommentId,
             value: commentValue,
             action: 'comment'
         }, id);
 
-        const newCommentDiv = getComment({
+        const newCommentDiv = getCommentElem({
             id: newCommentId,
-            userId: window.user.id,
-            value: commentValue
+            username: window.user.username,
+            comment: commentValue
         });
 
         allCommentsWrap.appendChild(newCommentDiv);
@@ -184,7 +175,9 @@
         });
     }
 
-    const getComment = (comment) => {
+    const getCommentElem = (comment) => {
+        const { username } = comment;
+
         const itemComment = document.createElement('div');
         const itemCommentUsername = document.createElement('p');
 
@@ -192,18 +185,15 @@
         itemComment.setAttribute('class', 'item-comment');
         itemComment.appendChild(itemCommentUsername);
 
-        getUsername(comment.userId)
-        .then(res => {
-            itemCommentUsername.innerHTML = res.username;
-        });
+        itemCommentUsername.innerHTML = username;
 
         const itemCommentContent = document.createElement('p');
         itemCommentContent.setAttribute('class', 'comment-content');
-        itemCommentContent.innerHTML = comment.value;
+        itemCommentContent.innerHTML = comment.comment;
         itemComment.appendChild(itemCommentContent);
 
         if (window.user) {
-            if (comment.userId === window.user.id) {
+            if (comment.username === window.user.username) {
                 const itemCommentDeleteButton = document.createElement('span');
                 itemCommentDeleteButton.setAttribute('class', 'fa fa-trash');
                 itemCommentDeleteButton.addEventListener('click', handleDeleteCommentClick(comment));
@@ -218,9 +208,9 @@
     const renderPhotos = (photos) => {
         photos.forEach(photo => {
             const { id } = photo;
-            const { userid } = photo;
+            const { comments } = photo;
             const { likes } = photo;
-            const { comment_info } = photo;
+            const { username } = photo;
 
             const mainItem = document.createElement('div');
             mainItem.setAttribute('class', 'main-item');
@@ -234,13 +224,10 @@
             itemUsername.setAttribute('class', 'item-username');
             itemHeader.setAttribute('class', 'item-header');
 
+            itemUsernameh3.innerHTML = username;
+
             itemHeader.appendChild(itemUsername);
             itemUsername.appendChild(itemUsernameh3);
-
-            getUsername(userid)
-                .then(res => {
-                    itemUsernameh3.innerHTML = res.username;
-                });
 
             const itemLike = document.createElement('div');
             itemLike.setAttribute('class', 'item-like');
@@ -277,13 +264,12 @@
 
             mainItem.appendChild(pictureContainer);
 
-                        
-            if (comment_info) {
+            if (comments) {
                 const allItemComments = document.createElement('div');
                 allItemComments.setAttribute('id', 'all-item-comments-' + id);
 
-                comment_info.forEach(comment => {
-                    let itemComment = getComment(comment, mainItem);
+                comments.forEach(comment => {
+                    let itemComment = getCommentElem(comment, mainItem);
 
                     allItemComments.appendChild(itemComment);
                 });
@@ -320,46 +306,15 @@
         });
     }
 
-    const convertCommentToObj = (comment) => {
-        let commentObj = comment.split('|');
-
-        commentObj = commentObj.map((comment) => {
-            comment = comment.split(':');
-            return {
-                id: comment[0],
-                userId: comment[1],
-                value: comment[2]
-            }
-        })
-
-        return commentObj;
-    }
-
     async function init () {
         const res = await fetch('http://localhost:8100/api/photo/get_all_photos.php')
             .then(res => res.json());
 
-            
-        res.photos = res.photos.map((photo) => {
-            if (photo.comment_info) {
-                return {
-                    ...photo,
-                    comment_info: convertCommentToObj(photo.comment_info)
-                }
-            } else {
-                return {
-                    ...photo,
-                    comment_info: []
-                };
-            }
-        });
-        
-        console.log(res.photos);
         commentCache = res.photos;
 
         renderPhotos(res.photos);
     }
 
-    init();
+    window.onInitialized(() => init());
 
 })();

@@ -7,13 +7,12 @@ window.user = null;
     async function getMe () {
         // !!token === token ? token : false;
         const isLoggedIn = !!token;
-    
-        if (!isLoggedIn) {
-            return;
+
+        if (isLoggedIn) {
+            const res = await window.fetchAPI('user/get_me.php');
+            window.user = res;
         }
 
-        const res = await window.fetchAPI('user/get_me.php');
-        window.user = res;
         isInitialized = true;
         triggerListeners();
     }
