@@ -20,10 +20,8 @@ if ($stmt->rowCount() > 0) {
 
     $checkValid = $stmt->execute(array($verificationCode));
     if ($checkValid) {
-        // true if user was updated succesfully and gets relocated
-        header('Location: http://localhost:8100/dashboard.php');
+        header('Location: http://localhost:8100/login.php');
     } else {
-        // false if user was not updated succesfully
         return false;
     }
 } else {

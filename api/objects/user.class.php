@@ -74,10 +74,8 @@ class User {
         $stmt->execute(array($this->email));
 
         if ($stmt->rowCount() > 0) {
-            // true if email has been already verified
             return true;
         } else {
-            // Send email if not verified
             $verificationCode = md5(uniqid("mysuperrandomanduniquestringfortheverification", true));
             $verificationLink = "http://localhost:8100/api/user/activate_user.php?code=" . $verificationCode;
 
