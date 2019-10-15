@@ -1,7 +1,4 @@
 Camagru project
 
-
-DESIGN
-_______________________________________________________________________________________________________________________________________________
-
-- Design should be fully responsive, which it obviously is not yet.
+- index photoItems should be paginated (6) per page.
+- after clicking the activation email you get linked to dashboard instead of login page

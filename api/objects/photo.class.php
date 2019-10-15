@@ -110,6 +110,28 @@ class Photo {
         }
     }
 
+    public function mailPhotoUpdate($user) {
+        $htmlStr = "";
+        $htmlStr .= "Hi " . $user[0]['username'] . ", <br /><br />";
+        $htmlStr .= "You have a new comment on your photo! <br />";
+        $htmlStr .= "Check it out at <a href='http://localhost:8100/index.php'>our website.</a> <br />";
+        $htmlStr .= "Kind regards,<br />";
+        $htmlStr .= "Camagru";
+
+        $name = "Camagru";
+        $subject = "Camagru | A user commented on your photo";
+        $recipient_email = $user[0]['email'];
+        $email_sender = "no-reply@camagru.com";
+
+        $headers  = "MIME-Version: 1.0\r\n";
+        $headers .= "Content-type: text/html; charset=iso-8859-1\r\n";
+        $headers .= "From: {$name} <{$email_sender}> \n";
+
+        $body = $htmlStr;
+
+        mail($recipient_email, $subject, $body, $headers);
+    }
+
     public function updatePhoto($updatedFields) {
         switch ($updatedFields->action) {
             case 'like':
@@ -131,7 +153,6 @@ class Photo {
                 break;
             case 'comment':
                 $comment = htmlspecialchars(strip_tags($updatedFields->comment));
-
                 $query = "INSERT INTO comments (photo_id, user_id, comment) 
                         VALUES (?, ?, ?)";
                 $stmt = $this->conn->prepare($query);
@@ -139,6 +160,19 @@ class Photo {
                 $stmt->execute(array($updatedFields->photoid, $updatedFields->userid, $comment));
 
                 $id = $this->conn->lastInsertId();
+
+                $query = "SELECT u.id, u.email, u.username
+                        FROM users u
+                        JOIN photos p ON u.id = p.userid
+                        JOIN comments c ON p.id = c.photo_id
+                        WHERE c.photo_id = ? LIMIT 1";
+                $stmt = $this->conn->prepare($query);
+                
+                $stmt->execute(array($updatedFields->photoid));
+
+                $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                $this->mailPhotoUpdate($result);
 
                 return $id;
             case 'uncomment':
