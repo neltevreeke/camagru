@@ -161,18 +161,20 @@ class Photo {
 
                 $id = $this->conn->lastInsertId();
 
-                $query = "SELECT u.id, u.email, u.username
+                $query = "SELECT u.id, u.email, u.username, u.notifications
                         FROM users u
                         JOIN photos p ON u.id = p.userid
                         JOIN comments c ON p.id = c.photo_id
                         WHERE c.photo_id = ? LIMIT 1";
                 $stmt = $this->conn->prepare($query);
-                
+
                 $stmt->execute(array($updatedFields->photoid));
 
                 $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                $this->mailPhotoUpdate($result);
+                if ($result[0]['notifications']) {
+                    $this->mailPhotoUpdate($result);
+                }
 
                 return $id;
             case 'uncomment':

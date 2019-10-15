@@ -154,6 +154,28 @@
         });
     });
 
+    const handleCheckboxClick = async () => {
+        const notificationButton = document.getElementById('checkbox-input-value');
+
+        if (!notificationButton.checked && window.user.notifications == 1) {
+            
+            await submitForm({
+                notifications: 0
+            });
+
+            window.user.notifications = 0;
+        }
+        
+        if (notificationButton.checked && window.user.notifications == 0) {
+            
+            await submitForm({
+                notifications: 1
+            });
+
+            window.user.notifications = 1;
+        }
+    }
+
     newEmailButton.addEventListener('click', async function () {
         if (newEmail.value === "") {
             return showValidationError("Email can't be empty.");
@@ -181,6 +203,35 @@
             password: newPassword.value
         });
     });
+
+    const renderNotificationsCheckbox = () => {
+        userDetailsSection = document.getElementById('user-details-section');
+
+        notificationsTitle = document.createElement('p');
+        notificationsTitle.setAttribute('class', 'user-details-title');
+        notificationsTitle.innerHTML = 'Receive email on comment:';
+
+        notificationsCheckboxP = document.createElement('p');
+        notificationsCheckbox = document.createElement('input');
+        notificationsCheckbox.setAttribute('type', 'checkbox');
+        notificationsCheckbox.setAttribute('id', 'checkbox-input-value');
+
+        notificationsCheckbox.addEventListener('click', handleCheckboxClick);
+
+        notificationsCheckboxP.appendChild(notificationsCheckbox);
+        notificationsCheckboxP.insertAdjacentHTML('beforeend', 'Yes, I want to.');
+
+        if (window.user.notifications == 1) {
+            notificationsCheckbox.checked = true;
+        }
+
+        if (window.user.notifications == 0) {
+            notificationsCheckbox.checked = false;
+        }
+
+        userDetailsSection.appendChild(notificationsTitle);
+        userDetailsSection.appendChild(notificationsCheckboxP);
+    }
         
     async function initialize () {
         renderAccountDetails();
@@ -191,6 +242,8 @@
             renderMessage(res.message);
             return null;
         }
+
+        renderNotificationsCheckbox();
 
         res.photos.reverse();
 

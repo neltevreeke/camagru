@@ -183,6 +183,10 @@ class User {
             $updateQuery .= " SET `password` = '" . $newPassword . "'";
         }
 
+        if (isset($updateFields->notifications)) {
+            $updateQuery .= " SET `notifications` = '" . $updateFields->notifications . "'";
+        }
+
         if ($updateQuery != "") {
             $query = "UPDATE " . $this->tableName .
                     $updateQuery . " WHERE id = ? LIMIT 1";

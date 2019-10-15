@@ -33,7 +33,8 @@
                                 `password` varchar(100) DEFAULT NULL,
                                 `verified` int(2) NOT NULL,
                                 `code` varchar(100) NOT NULL,
-                                `admin` int(2) NOT NULL
+                                `admin` int(2) NOT NULL,
+                                `notifications` int(2) DEFAULT 1
                                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;');
     $stmt->execute();
 

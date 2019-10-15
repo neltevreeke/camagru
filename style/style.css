@@ -337,10 +337,14 @@ button:hover {
 }
 
 .user-sidebar {
-    height: 550px;
+    height: 610px;
     border: 1px solid black;
     border-radius: 5px;
     width: 240px;
+}
+
+.user-sidebar #checkbox-input-value {
+    width: auto;
 }
 
 .user-title p {
