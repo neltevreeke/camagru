@@ -35,8 +35,6 @@
                     <p class="user-details-title">Change Password:</p>
                     <p><input id="new-password-value" type="password" placeholder="Enter new password" /></p>
                     <p><input id="new-password-repeat-value" type="password" placeholder="Repeat new password" /><button id="change-password"><span class="fa fa-edit"></span></button></p>
-                    <!-- <p class="user-details-title">Receive email on comment:</p>
-                    <p><input id="checkbox-input-value" type="checkbox" checked />Yes, i want to</p> -->
                     <div class="change-details-error" id="change-details-error">
                     </div>
                 </div>

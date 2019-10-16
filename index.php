@@ -12,6 +12,11 @@
         <div class = "main-content">
             <div id="photos">
             </div>
+            <div class="pagination">
+                <p style="margin-right: 20px;">Page: <span id="page"></span></p>
+                <a id="pagination-button-previous">Previous</a>
+                <a id="pagination-button-next">Next</a>
+            </div>
         </div>
         <?php include_once ('./modules/footer.php'); ?>
         <script src=".\js\api.js"></script>

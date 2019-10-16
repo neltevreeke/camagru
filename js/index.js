@@ -2,6 +2,9 @@
     const elPhotosContainer = document.getElementById('photos');
     let likesCache = null;
     let commentCache = null;
+    let currentPage = 1;
+    let recordsPerPage = 6;
+    let photosLength = null;
 
     const checkLike = async (updatedFields) => {
         const res = await window.fetchAPI('photo/update_photo.php', {
@@ -241,11 +244,11 @@
             return null;
         }
 
-        photos.forEach(photo => {
-            const { id } = photo;
-            const { comments } = photo;
-            const { likes } = photo;
-            const { username } = photo;
+        // photos.forEach(photo => {
+            const id = photos.id;
+            const comments = photos.comments;
+            const likes = photos.likes;
+            const username = photos.username;
 
             const mainItem = document.createElement('div');
             mainItem.setAttribute('class', 'main-item');
@@ -293,7 +296,7 @@
             const pictureImage = document.createElement('img');
             pictureImage.setAttribute('style', 'width: 100%; height: auto;');
             pictureImage.setAttribute('src', '/api/photo/photo.php?id=' + id);
-            pictureImage.addEventListener('dblclick', handlePhotoLike(photo));
+            pictureImage.addEventListener('dblclick', handlePhotoLike(photos));
 
             pictureContainer.appendChild(pictureImage);
 
@@ -325,7 +328,7 @@
                 itemCommentButton.setAttribute('id', 'comment-input-button-' + id);
                 itemCommentButton.setAttribute('class', 'comment-input-button');
                 
-                itemCommentButton.addEventListener('click', handleCommentButtonClick(photo));
+                itemCommentButton.addEventListener('click', handleCommentButtonClick(photos));
                 
                 const itemCommentButtonSpan = document.createElement('span');
                 itemCommentButtonSpan.setAttribute('class', 'fa fa-edit');
@@ -338,7 +341,63 @@
             itemCommentSection.setAttribute('class', 'item-place-comment');
             itemCommentSection.setAttribute('id', 'item-place-comment-' + id);
             mainItem.appendChild(itemCommentSection);
-        });
+        // });
+    }
+
+    const changePage = (page, photos) => {
+        const buttonNext = document.getElementById('pagination-button-next');
+        const buttonPrev = document.getElementById('pagination-button-previous');
+        const pageSpan = document.getElementById('page');
+
+        buttonNext.addEventListener('click', nextPage);
+        buttonPrev.addEventListener('click', prevPage);
+
+        if (page < 1) {
+            page = 1;
+        }
+        if (page > numPages(photosLength)) {
+            page = numPages(photosLength);
+        }
+
+        elPhotosContainer.innerHTML = "";
+
+        for (let i = (page - 1) * recordsPerPage; i < (page * recordsPerPage) && i < photosLength; i++) {
+            renderPhotos(photos[i]);
+        }
+
+        pageSpan.innerHTML = page + '/' + numPages(photosLength);
+
+        if (page == 1) {
+            buttonPrev.style.visibility = 'hidden';
+        } else {
+            buttonPrev.style.visibility = 'visible';
+        }
+
+        if (page == numPages(photosLength)) {
+            buttonNext.style.visibility = 'hidden';
+        } else {
+            buttonNext.style.visibility = 'visible';
+        }
+    }
+
+    const prevPage = async () => {
+        if (currentPage > 1) {
+            currentPage--;
+            changePage(currentPage, commentCache);
+        }
+    }
+
+    const nextPage = async () => {
+        if (currentPage < numPages(photosLength)) {
+            currentPage++;
+            changePage(currentPage, commentCache);
+        }
+    }
+
+    const numPages = (photosLength) => {
+        return (
+            Math.ceil(photosLength / recordsPerPage)
+        );
     }
 
     async function init () {
@@ -347,9 +406,12 @@
 
         res.photos.reverse();
 
-        commentCache = res.photos;
+        console.log(res.photos);
 
-        renderPhotos(res.photos);
+        commentCache = res.photos;
+        photosLength = res.photos.length;
+
+        changePage(1, res.photos);
     }
 
     window.onInitialized(() => init());

@@ -74,6 +74,19 @@ button:hover {
     float: right;
 }
 
+/* INDEX */
+
+.pagination {
+    width: 100%;
+    margin-bottom: 50px;
+}
+
+.pagination a {
+    color: #333;
+    text-decoration: none;
+    margin-right: 20px;
+    cursor: pointer;
+}
 
 /* FOOTER */ 
 
@@ -109,6 +122,7 @@ button:hover {
 
 .main-content {
     display: flex;
+    flex-wrap: wrap;
     width: 1160px;
     padding: 50px 10px 10px 10px;
     margin: 0 auto;
@@ -311,18 +325,6 @@ button:hover {
 }
 
 /* DASHBOARD  */
-
-/* .grid {
-    display: grid;
-    grid-template-columns: 251px 251px 251px 251px;
-    grid-template-rows: 202px; // niet gebruikt
-    grid-gap: 10px;
-  }
-  
-  .grid--full {
-    grid-template-columns: 200px 200px 200px;
-    grid-template-rows: 50px;
-  } */
 
 .user-photos-row {
     margin-top: 50px;
