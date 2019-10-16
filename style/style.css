@@ -606,7 +606,33 @@ input[type="file"] {
 }
 
 @media (max-width: 768px) {
-    
+    .main-content {
+        width: 768px;
+        margin-top: 50px;
+        padding: 0px;
+    }
+
+    #photos {
+        grid-template-columns: 1fr 1fr;
+        margin-right: 0px;
+    }
+
+    .main-wrapper {
+        width: 768px;
+    }
+
+    .capture-wrap {
+        width: 100%;
+    }
+
+    .video-wrap {
+        float: none;
+        width: auto;
+    }
+
+    .video-wrap-content {
+        margin-top: 0px;
+    }
 }
 
 @media (max-width: 320px) {
