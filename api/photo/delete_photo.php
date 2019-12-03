@@ -1,5 +1,6 @@
 <?php
 
+include_once("../objects/auth.php");
 include_once('../../config/database.php');
 
 $json = file_get_contents('php://input');

@@ -234,6 +234,12 @@
     }
         
     async function initialize () {
+        const token = localStorage.getItem('token')
+
+        if(!token) {
+            window.location.href = 'http://localhost:8100/login.php'
+        }
+
         renderAccountDetails();
 
         const res = await window.fetchAPI('photo/get_photo.php');

@@ -73,6 +73,12 @@
 
 
     function initialize () {
+        const token = localStorage.getItem('token')
+
+        if(!token) {
+            window.location.href = 'http://localhost:8100/login.php'
+        }
+
         photoId = getQueryVariable('photoid');
 
         renderPhoto(photoId);

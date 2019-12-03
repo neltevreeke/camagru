@@ -48,8 +48,6 @@ elRegister.onclick = () => {
         'password': elRegisterPassword.value
     }
 
-    // Posting data to api and checking return values are good to go
-    // Displaying error message if thats not the case
     fetch('http://localhost:8100/api/user/create_user.php', {
         method: 'POST',
         headers: {

@@ -106,6 +106,12 @@
 
     // Access webcam
     async function init() {
+        const token = localStorage.getItem('token')
+
+        if(!token) {
+            window.location.href = 'http://localhost:8100/login.php'
+        }
+
         const stream = await navigator.mediaDevices.getUserMedia({
             video: {
                 width: 500, height: 480

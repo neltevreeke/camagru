@@ -2,6 +2,7 @@
 include_once('../../config/database.php');
 include_once('../objects/photo.class.php');
 include_once('../objects/tokens.php');
+include_once("../objects/auth.php");
 
 header("Access-Control-Allow-Origin: http://localhost:8100/");
 header("Access-Control-Allow-Methods: POST");
