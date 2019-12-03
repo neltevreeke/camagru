@@ -406,8 +406,6 @@
 
         res.photos.reverse();
 
-        console.log(res.photos);
-
         commentCache = res.photos;
         photosLength = res.photos.length;
 
