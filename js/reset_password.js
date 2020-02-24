@@ -39,11 +39,18 @@ const submitForm =  (updatedFields) => {
 elResetPasswordButton.onclick = () => {
     const get = getQueryVariable('code');
 
+    if (!get) {
+        showValidationError("Your password reset token is invalid")
+        return
+    }
+
     if (elResetPasswordInput.value.length < 6) {
         showValidationError("Password requires at least 6 characters");
+        return
     }
     if (elResetPasswordRepeatInput.value !== elResetPasswordInput.value) {
         showValidationError("Passwords do not match");
+        return
     }
 
     submitForm({

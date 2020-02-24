@@ -106,9 +106,7 @@
 
     // Access webcam
     async function init() {
-        const token = localStorage.getItem('token')
-
-        if(!token) {
+        if(!window.user) {
             window.location.href = 'http://localhost:8100/login.php'
         }
 
@@ -133,7 +131,6 @@
             elVideoWrapUploadButton.addEventListener('click', handleUploadPhotoClick);
             elVideoWrapUploadButton.innerHTML = 'Upload image';
 
-
             elVideoWrap.insertBefore(elVideoWrapContent, video);
             elVideoWrapContent.appendChild(elVideoWrapText);
             elVideoWrapContent.appendChild(elVideoWrapInput);
@@ -141,7 +138,7 @@
 
             return null;
         });
-        
+
         window.stream = stream;
         video.srcObject = stream;
     }

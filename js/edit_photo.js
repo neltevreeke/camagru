@@ -50,10 +50,10 @@
     const getQueryVariable = (variable) => {
         let query = window.location.search.substring(1);
         let vars = query.split("&");
-    
+
         for (let i = 0; i < vars.length; i++) {
             let pair = vars[i].split("=");
-    
+
             if (pair[0] == variable) {
                 return pair[1];
             }
@@ -64,7 +64,7 @@
 
     const renderPhoto = (id) => {
         const image = document.createElement('img');
-            
+
         image.setAttribute('src', '/api/photo/photo.php?id=' + id);
         image.setAttribute('style', 'object-fit: cover; width: 100%; height: 100%; border-radius: 3px; border: 1px solid black');
 
@@ -73,9 +73,7 @@
 
 
     function initialize () {
-        const token = localStorage.getItem('token')
-
-        if(!token) {
+        if(!window.user) {
             window.location.href = 'http://localhost:8100/login.php'
         }
 
