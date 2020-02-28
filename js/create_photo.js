@@ -144,5 +144,6 @@
     }
 
     // Load init
-    init();
+    window.onInitialized(() => init());
+    // init();
 })();

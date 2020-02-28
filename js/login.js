@@ -48,7 +48,14 @@ elLogin.onclick = () => {
 
             elLoginEmail.value = "";
             elLoginPassword.value = "";
-            
+
+            renderLoginError(errArr);
+        } else if (res.message === 'not-verified') {
+            errArr.push("This account has yet to be verified, check your email")
+
+            elLoginEmail.value = "";
+            elLoginPassword.value = "";
+
             renderLoginError(errArr);
         }
     })

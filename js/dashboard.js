@@ -5,7 +5,7 @@
     const elUserTitle = document.getElementById('user-title');
     const elUserDetailsUsername = document.getElementById('user-details-username');
     const elUserDetailsEmail = document.getElementById('user-details-email');
-    
+
     const errorField = document.getElementById('change-details-error');
 
     const newUsernameButton = document.getElementById('change-username');
@@ -24,7 +24,7 @@
         const messageDiv = document.createElement('div');
         messageDiv.setAttribute('class', 'photo-message');
         messageDiv.setAttribute('class', 'photos');
-    
+
         messageDiv.innerHTML = message;
         elPhotos.appendChild(messageDiv);
     }
@@ -32,7 +32,7 @@
     const renderPhotos = (photos) => {
 
         elPhotos.innerHTML = "";
-        
+
         photos.forEach(photo => {
             const { id } = photo;
 
@@ -74,7 +74,7 @@
 
     const handleDeletePhotoClick = photo => async () => {
         const { id } = photo;
-        
+
         const res = await window.fetchAPI('photo/delete_photo.php', {
             method: 'POST',
             body: id
@@ -158,16 +158,16 @@
         const notificationButton = document.getElementById('checkbox-input-value');
 
         if (!notificationButton.checked && window.user.notifications == 1) {
-            
+
             await submitForm({
                 notifications: 0
             });
 
             window.user.notifications = 0;
         }
-        
+
         if (notificationButton.checked && window.user.notifications == 0) {
-            
+
             await submitForm({
                 notifications: 1
             });
@@ -185,7 +185,7 @@
 
         await submitForm({
             email: newEmail.value
-        });        
+        });
     });
 
     newPasswordButton.addEventListener('click', async function () {
@@ -232,18 +232,16 @@
         userDetailsSection.appendChild(notificationsTitle);
         userDetailsSection.appendChild(notificationsCheckboxP);
     }
-        
-    async function initialize () {
-        const token = localStorage.getItem('token')
 
-        if(!token) {
+    async function initialize () {
+        if (!window.user) {
             window.location.href = 'http://localhost:8100/login.php'
         }
 
         renderAccountDetails();
 
         const res = await window.fetchAPI('photo/get_photo.php');
-        
+
         if (res && res.message === "No photos found") {
             renderMessage(res.message);
             return null;
