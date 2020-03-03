@@ -1,4 +1,4 @@
-/* HTML TAGS */ 
+/* HTML TAGS */
 
 body {
     margin: 0 auto;
@@ -40,7 +40,12 @@ button:hover {
     color: black;
 }
 
-/* NAVBAR */ 
+button:disabled {
+    cursor: not-allowed;
+    background-color: #666666;
+}
+
+/* NAVBAR */
 
 .navbar {
     width: 100%;
@@ -88,7 +93,7 @@ button:hover {
     cursor: pointer;
 }
 
-/* FOOTER */ 
+/* FOOTER */
 
 .footer-capture {
     position: fixed;
@@ -469,7 +474,7 @@ button:hover {
 
 /* CREATE PHOTO PAGE */
 
-.overlay-error { 
+.overlay-error {
     color: red;
     text-align: center;
     margin-top: 25px;

@@ -4,6 +4,8 @@
     const snap = document.getElementById("snap");
     const save = document.getElementById('save');
 
+    save.setAttribute("disabled", "disabled");
+
     const elError = document.getElementById('overlay-error');
     const elWatermarkButtons = document.getElementsByClassName('watermarkButton');
 
@@ -18,6 +20,8 @@
         if (elSelectedWatermarkType !== null) {
             elSelectedWatermarkType.classList.remove('selected');
         }
+
+        save.removeAttribute("disabled");
 
         const watermarkType = event.target.getAttribute('data-watermark-type').toUpperCase();
         selectedWatermarkType = watermarkType;
